@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,19 +15,21 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="299dp"
-        android:background="#F13020"
+        android:background="#F47E74"
+        android:shadowColor="#FB7575"
         android:text="Accedi"
-        android:textAllCaps="false" />
+        android:textAllCaps="false"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/bottone2"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/bottone1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/bottone1"
         android:layout_marginTop="370dp"
-        android:background="#EA2F20"
+        android:background="#F48178"
         android:text="Registrati"
         android:textAllCaps="false" />
 
@@ -39,7 +42,7 @@
         android:layout_centerInParent="true"
         android:layout_marginTop="27dp"
         android:layout_marginBottom="228dp"
-        android:background="#15317E"
+        android:background="#3567EF"
         android:text="Ricerca Strutture"
         android:textAllCaps="false" />
 
@@ -91,6 +94,18 @@
         android:layout_marginBottom="-32dp"
         android:alpha="0.9"
         android:src="@drawable/forme" />
+
+    <TextView
+        android:id="@+id/CV19"
+        android:layout_width="114dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="59dp"
+        android:text="CV'19"
+        android:textColor="#FFFFFF"
+        android:textSize="36sp"
+        android:textStyle="bold" />
 
 
 </RelativeLayout>

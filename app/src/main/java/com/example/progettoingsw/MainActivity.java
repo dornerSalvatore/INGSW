@@ -3,6 +3,8 @@ package com.example.progettoingsw;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import java.lang.Object;
+
+import android.app.Activity;
 import android.content.Intent;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -17,7 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
                 dialog.show();*/
+              Button bottone2=(Button) findViewById(R.id.bottone1);
+                      bottone2.setOnClickListener(new View.OnClickListener() {
+                          @Override
+                          public void onClick(View view) {
+                              Intent openPage1 = new Intent(MainActivity.this,MainActivity2.class);
+                              // passo all'attivazione dell'activity Pagina.java
+                              startActivity(openPage1);
+                          }
+                      });
             }
         });
 
@@ -56,11 +67,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent openPage1 = new Intent(MainActivity.this,RicercaActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
-                startActivity(openPage1);
+                startActivityForResult(openPage1, 0);
             }
         });
 
-Button bottone2=(Button) findViewById(R.id.bottone2);
+        Button bottone2=(Button) findViewById(R.id.bottone2);
         bottone2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,5 +80,6 @@ Button bottone2=(Button) findViewById(R.id.bottone2);
                 startActivity(openPage1);
             }
         });
+
         };
         }

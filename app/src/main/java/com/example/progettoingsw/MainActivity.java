@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
                     }
                 });
                 dialog.show();*/
+                Button bottone5=(Button) findViewById(R.id.bottone1);
               Button bottone2=(Button) findViewById(R.id.bottone1);
                       bottone2.setOnClickListener(new View.OnClickListener() {
                           @Override

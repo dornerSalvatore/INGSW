@@ -66,9 +66,10 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="213dp"
+        android:background="#ffffff"
         android:ems="10"
-        android:inputType="textPassword"
-        android:background="#ffffff"/>
+        android:hint="password"
+        android:inputType="textPassword" />
 
     <ImageView
         android:id="@+id/imgview"

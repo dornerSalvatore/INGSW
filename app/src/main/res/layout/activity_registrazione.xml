@@ -10,100 +10,102 @@
         android:id="@+id/textusr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="60dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="60dp"
-        android:layout_marginTop="120dp"
-        android:ems="10"
+        android:layout_marginTop="34dp"
         android:background="#ffffff"
-        android:inputType="textPersonName"
-        android:text="Username" />
+        android:ems="10"
+        android:hint="username"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/textpwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textusr"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginTop="180dp"
-        android:ems="10"
+        android:layout_marginTop="85dp"
         android:background="#ffffff"
+        android:ems="10"
+        android:hint="password"
         android:inputType="textPassword" />
 
     <EditText
         android:id="@+id/textemail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textpwd"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginTop="240dp"
-        android:ems="10"
+        android:layout_marginTop="142dp"
         android:background="#ffffff"
+        android:ems="10"
+        android:hint="email"
         android:inputType="textEmailAddress" />
 
     <EditText
         android:id="@+id/textnick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_below="@id/textemail"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginTop="300dp"
-        android:ems="10"
+        android:layout_marginTop="197dp"
         android:background="#ffffff"
-        android:inputType="textPersonName"
-        android:text="Nickname" />
+        android:ems="10"
+        android:hint="nickname"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/textnome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/textnick"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginBottom="320dp"
-        android:ems="10"
+        android:layout_marginTop="256dp"
         android:background="#ffffff"
-        android:inputType="textPersonName"
-        android:text="Nome" />
+        android:ems="10"
+        android:hint="nome"
+        android:inputType="textPersonName" />
 
     <EditText
         android:id="@+id/textcognome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/textnome"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="60dp"
-        android:layout_marginBottom="260dp"
-        android:ems="10"
+        android:layout_marginTop="304dp"
         android:background="#ffffff"
-        android:inputType="textPersonName"
-        android:text="Cognome" />
+        android:ems="10"
+        android:hint="cognome"
+        android:inputType="textPersonName" />
+
 
     <TextView
         android:id="@+id/textdata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/textcognome"
+        android:layout_alignParentTop="true"
+
+
         android:layout_marginStart="60dp"
         android:layout_marginLeft="75dp"
-        android:layout_marginBottom="200dp"
+        android:layout_marginTop="373dp"
         android:background="#ffffff"
         android:text="Data di nascita" />
 
@@ -111,64 +113,61 @@
         android:id="@+id/editdata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="23dp"
-        android:layout_marginBottom="197dp"
+        android:layout_below="@id/textcognome"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="175dp"
+        android:layout_marginTop="369dp"
         android:background="#ffffff"
         android:ems="10"
+        android:hint="gg/mm/aaaa"
         android:inputType="date" />
 
     <TextView
         android:id="@+id/textNomeCognome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/editdata"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="80dp"
-        android:layout_marginBottom="130dp"
+        android:layout_marginTop="425dp"
         android:background="#ffffff"
         android:text="Visualizza nome e cognome" />
-
-    <RadioGroup
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="155dp"
-        android:layout_marginRight="155dp"
-        android:layout_marginBottom="110dp" />
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="60dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="56dp"
         android:background="#B7EF0A26"
         android:text="Indietro" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+        android:layout_height="53dp"
+
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="83dp"
-        android:layout_marginRight="83dp"
-        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="240dp"
+        android:layout_marginTop="11dp"
+        android:layout_marginBottom="56dp"
         android:background="#B7EF0A26"
         android:text="Registrati" />
+
+    <RadioButton
+        android:id="@+id/visualizzaNomeCognome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textNomeCognome"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="76dp"
+        android:layout_marginTop="470dp"
+        android:text="Si" />
 
 </RelativeLayout>
 

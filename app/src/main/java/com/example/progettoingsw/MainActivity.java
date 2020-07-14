@@ -1,34 +1,20 @@
 package com.example.progettoingsw;
 
 import java.sql.Connection;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.DialogFragment;
-import java.lang.Object;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
@@ -42,6 +28,7 @@ public class MainActivity extends Activity {
     Button bottone1;
     Button bottone3;
     Button bottone2;
+    Button check1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +43,7 @@ public class MainActivity extends Activity {
         password = (EditText) findViewById(R.id.editTextTextPassword);
         username.setText(username.getText().toString());
         bottone1=(Button) findViewById(R.id.bottone1);
+        check1=(Button)findViewById(R.id.internet);
 
         bottone1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,6 +76,15 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent openPage1 = new Intent(MainActivity.this,RegistrazioneActivity.class);
+                // passo all'attivazione dell'activity Pagina.java
+                startActivity(openPage1);
+            }
+        });
+
+        check1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openPage1 = new Intent(MainActivity.this,MainActivity3.class);
                 // passo all'attivazione dell'activity Pagina.java
                 startActivity(openPage1);
             }

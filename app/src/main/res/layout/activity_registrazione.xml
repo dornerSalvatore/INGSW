@@ -96,37 +96,9 @@
 
 
     <TextView
-        android:id="@+id/textdata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textcognome"
-        android:layout_alignParentTop="true"
-
-
-        android:layout_marginStart="60dp"
-        android:layout_marginLeft="75dp"
-        android:layout_marginTop="373dp"
-        android:background="#ffffff"
-        android:text="Data di nascita" />
-
-    <EditText
-        android:id="@+id/editdata"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textcognome"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="175dp"
-        android:layout_marginTop="369dp"
-        android:background="#ffffff"
-        android:ems="10"
-        android:hint="gg/mm/aaaa"
-        android:inputType="date" />
-
-    <TextView
         android:id="@+id/textNomeCognome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editdata"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginStart="60dp"
@@ -166,8 +138,27 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="76dp"
-        android:layout_marginTop="470dp"
+        android:layout_marginTop="464dp"
         android:text="Si" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="207dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textNomeCognome"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="394dp" />
+
+    <Button
+        android:id="@+id/pick_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textcognome"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="13dp"
+        android:onClick="showDatePickerDialog"
+        android:text="Data di nascita" />
 
 </RelativeLayout>
 

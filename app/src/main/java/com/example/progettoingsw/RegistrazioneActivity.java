@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class RegistrazioneActivity extends AppCompatActivity {
+
     Connection con;
     EditText username;
     EditText password;
@@ -45,6 +46,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
      int mYear,mMonth,mDay;
     Statement stmt3 ;
     final Calendar c = Calendar.getInstance();
+    TextView status;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +60,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
         visualizza=(RadioButton) findViewById(R.id.visualizzaNomeCognome);
         final Button pickDate = (Button) findViewById(R.id.pick_date);
         final TextView textView= (TextView) findViewById(R.id.date);;
-
+        status = (TextView)findViewById(R.id.status);
 
         final Calendar myCalendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
@@ -130,26 +132,34 @@ public class RegistrazioneActivity extends AppCompatActivity {
         bottone2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new RegistrazioneActivity.checkLogin().execute(""); //codice per eseguire la connessione e interrogazione al DBMS
+                new RegistrazioneActivity.checkRegistrazione().execute(""); //codice per eseguire la connessione e interrogazione al DBMS
                 //Intent openPage1 = new Intent(RegistrazioneActivity.this,MainActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
                 //startActivity(openPage1);
             }
         });
     }
-    public class checkLogin extends AsyncTask<String, String, String> {
-
+    public class checkRegistrazione extends AsyncTask<String, String, String> {
+        String l;
         String z = null;
         Boolean isSuccess = false;
 
 
         @Override
         protected void onPreExecute() {
+            status.setText("Sending Data to Database");
 
         }
 
         @Override
         protected void onPostExecute(String s) {
+
+            username.setText("");
+            email.setText("");
+            password.setText("");
+            nickname.setText("");
+            nome.setText("");
+            cognome.setText("");
 
         }
 
@@ -170,25 +180,26 @@ public class RegistrazioneActivity extends AppCompatActivity {
                     String sql = "SELECT * FROM Utente WHERE username = '" + username.getText()  + "' ";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
-                    String sql1 = "SELECT * FROM Utente WHERE email = '" + email.getText()  + "' ";
+                    /*String sql1 = "SELECT * FROM Utente WHERE email = '" + email.getText()  + "' ";
                     Statement stmt1 = con.createStatement();
-                    ResultSet rs1 = stmt.executeQuery(sql);
+                    ResultSet rs1 = stmt.executeQuery(sql1);
                     String sql2 = "SELECT * FROM Utente WHERE nickname = '" + nickname.getText()  + "' ";
                     Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt.executeQuery(sql);
+                    ResultSet rs2 = stmt.executeQuery(sql2);*/
 
-                    if (rs.next() || rs1.next() || rs2.next()) {
+                    if (rs.next() /*|| rs1.next() || rs2.next()*/) {
                         if(rs.next()) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(RegistrazioneActivity.this, "username già presente", Toast.LENGTH_LONG).show();
+                                    status.setText("Username gia presente");
 
                                 }
                             });
+
                             username.setText("");
                         }
-                        if(rs1.next()) {
+                       /* if(rs1.next()) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -209,24 +220,24 @@ public class RegistrazioneActivity extends AppCompatActivity {
                                 }
                             });
                             nickname.setText("");
-                        }
+                        }*/
                     } else {
                         runOnUiThread(new Runnable() {
                             @Override
-                            public void run() {
-                                String sql = "INSERT INTO Utente (username,email,password,nickname,nome,cognome,data) VALUES ('"+username.getText()+"','"+email.getText()+"','"+password.getText()+"','"+nickname.getText()+"','"+nome.getText()+"','"+cognome.getText()+"','"+";data="+ c +"')";
+                           public void run() {
+                                /*String sql3 = "INSERT INTO Utente (nome,cognome,email,username,password,DataNascita) VALUES ('"+nome.getText()+"','"+cognome.getText()+"','"+email.getText()+"','"+username.getText()+"','"+password.getText()+"','"+ c +"')";
                                 try {
                                     stmt3 = con.createStatement();
-                                    stmt3.executeUpdate(sql);
+                                    stmt3.executeUpdate(sql3);
                                 } catch (SQLException e) {
                                     e.printStackTrace();
-                                }
+                                }*/
 
 
-                                Toast.makeText(RegistrazioneActivity.this, "Registrazione avvenuta con successo", Toast.LENGTH_LONG).show();
+                                status.setText("Registrazione avvenuta con successo");
                             }
                         });
-                        z = "Success";
+                       z = "Success";
 
                         Intent intent = new Intent(RegistrazioneActivity.this, MainActivity.class);
                         startActivity(intent);

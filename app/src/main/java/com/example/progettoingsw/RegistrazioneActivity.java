@@ -2,7 +2,6 @@ package com.example.progettoingsw;
 
 import androidx.appcompat.app.AppCompatActivity;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -31,6 +30,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class RegistrazioneActivity extends AppCompatActivity {
@@ -42,9 +42,9 @@ public class RegistrazioneActivity extends AppCompatActivity {
     EditText nome;
     EditText cognome;
     RadioButton visualizza;
-    private int mYear,mMonth,mDay;
+     int mYear,mMonth,mDay;
     Statement stmt3 ;
-
+    final Calendar c = Calendar.getInstance();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,7 +84,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                final Calendar c = Calendar.getInstance();
+                // final Calendar c = Calendar.getInstance();
                 mYear = c.get(Calendar.YEAR);
                 mMonth = c.get(Calendar.MONTH);
                 mDay = c.get(Calendar.DAY_OF_MONTH);
@@ -250,7 +250,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
         String connectionURL = null;
         try{
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";";
+            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";data="+ c +";";
             connection = DriverManager.getConnection(connectionURL);
         }catch (Exception e){
             Log.e("SQL Connection Error : ", e.getMessage());

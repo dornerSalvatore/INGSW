@@ -130,10 +130,10 @@ public class RegistrazioneActivity extends AppCompatActivity {
         bottone2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //new RegistrazioneActivity.checkLogin().execute(""); codice per eseguire la connessione e interrogazione al DBMS
-                Intent openPage1 = new Intent(RegistrazioneActivity.this,MainActivity.class);
+                new RegistrazioneActivity.checkLogin().execute(""); //codice per eseguire la connessione e interrogazione al DBMS
+                //Intent openPage1 = new Intent(RegistrazioneActivity.this,MainActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
-                startActivity(openPage1);
+                //startActivity(openPage1);
             }
         });
     }
@@ -214,7 +214,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                String sql = "INSERT INTO register (username,email,password,nickname,nome,cognome) VALUES ('"+username.getText()+"','"+email.getText()+"','"+password.getText()+"','"+nickname.getText()+"','"+nome.getText()+"','"+cognome.getText()+"','"+"')";
+                                String sql = "INSERT INTO Utente (username,email,password,nickname,nome,cognome,data) VALUES ('"+username.getText()+"','"+email.getText()+"','"+password.getText()+"','"+nickname.getText()+"','"+nome.getText()+"','"+cognome.getText()+"','"+";data="+ c +"')";
                                 try {
                                     stmt3 = con.createStatement();
                                     stmt3.executeUpdate(sql);
@@ -250,7 +250,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
         String connectionURL = null;
         try{
             Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";data="+ c +";";
+            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";";
             connection = DriverManager.getConnection(connectionURL);
         }catch (Exception e){
             Log.e("SQL Connection Error : ", e.getMessage());

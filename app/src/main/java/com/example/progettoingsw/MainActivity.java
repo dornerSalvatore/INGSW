@@ -122,7 +122,7 @@ public class MainActivity extends Activity {
             }
             else {
                 try {
-                    String sql = "SELECT * FROM Utente WHERE username = '" + username.getText() + "' AND passwd= '" + password.getText() + "' ";
+                    String sql = "SELECT Nickname FROM Utente WHERE username = '" + username.getText() + "' AND passwd= '" + password.getText() + "' ";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
 

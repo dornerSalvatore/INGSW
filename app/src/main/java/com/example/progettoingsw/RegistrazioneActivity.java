@@ -43,10 +43,8 @@ public class RegistrazioneActivity extends AppCompatActivity {
     EditText nome;
     EditText cognome;
     RadioButton visualizza;
-     int mYear,mMonth,mDay;
-    Statement stmt3 ;
-    final Calendar c = Calendar.getInstance();
-    TextView status;
+    int c =0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,67 +56,15 @@ public class RegistrazioneActivity extends AppCompatActivity {
         nome=(EditText) findViewById(R.id.textnome);
         cognome=(EditText) findViewById(R.id.textcognome);
         visualizza=(RadioButton) findViewById(R.id.visualizzaNomeCognome);
-        final Button pickDate = (Button) findViewById(R.id.pick_date);
-        final TextView textView= (TextView) findViewById(R.id.date);;
-        status = (TextView)findViewById(R.id.status);
-
-        final Calendar myCalendar = Calendar.getInstance();
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener()
-        {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear,
-                                  int dayOfMonth) {
-                // TODO Auto-generated method stub
-                myCalendar.set(Calendar.YEAR, year);
-                myCalendar.set(Calendar.MONTH, monthOfYear);
-                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                // myCalendar.add(Calendar.DATE, 0);
-                String myFormat = "yyyy-MM-dd"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                textView.setText(sdf.format(myCalendar.getTime()));
-            }
 
 
-        };
 
-        pickDate.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                // final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
 
-                // Launch Date Picker Dialog
-                DatePickerDialog dpd = new DatePickerDialog(RegistrazioneActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
 
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                // Display Selected date in textbox
 
-                                if (year < mYear)
-                                    view.updateDate(mYear,mMonth,mDay);
 
-                                if (monthOfYear < mMonth && year == mYear)
-                                    view.updateDate(mYear,mMonth,mDay);
 
-                                if (dayOfMonth < mDay && year == mYear && monthOfYear == mMonth)
-                                    view.updateDate(mYear,mMonth,mDay);
-
-                                textView.setText(dayOfMonth + "-"
-                                        + (monthOfYear + 1) + "-" + year);
-
-                            }
-                        }, mYear, mMonth, mDay);
-                dpd.getDatePicker().setMinDate(01/01/1960);
-                dpd.show();
-
-            }
-        });
         Button bottone1=(Button) findViewById(R.id.button1);
         bottone1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,104 +86,116 @@ public class RegistrazioneActivity extends AppCompatActivity {
         });
     }
     public class checkRegistrazione extends AsyncTask<String, String, String> {
-        String l;
         String z = null;
         Boolean isSuccess = false;
 
 
         @Override
         protected void onPreExecute() {
-            status.setText("Sending Data to Database");
 
         }
 
         @Override
         protected void onPostExecute(String s) {
 
-            username.setText("");
-            email.setText("");
-            password.setText("");
-            nickname.setText("");
-            nome.setText("");
-            cognome.setText("");
+
+
 
         }
 
         @Override
         protected String doInBackground(String... strings) {
-            con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
-            if(con == null){
+
+            con = connectionClass(ConnectionClass.un.toString(), ConnectionClass.pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
+            if (con == null) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(RegistrazioneActivity.this,"Check Internet Connection",Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegistrazioneActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
                     }
                 });
                 z = "On Internet Connection";
-            }
-            else {
+            } else {
                 try {
                     String sql = "SELECT * FROM Utente WHERE username = '" + username.getText()  + "' ";
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
-                    /*String sql1 = "SELECT * FROM Utente WHERE email = '" + email.getText()  + "' ";
-                    Statement stmt1 = con.createStatement();
-                    ResultSet rs1 = stmt.executeQuery(sql1);
-                    String sql2 = "SELECT * FROM Utente WHERE nickname = '" + nickname.getText()  + "' ";
-                    Statement stmt2 = con.createStatement();
-                    ResultSet rs2 = stmt.executeQuery(sql2);*/
 
-                    if (rs.next() /*|| rs1.next() || rs2.next()*/) {
                         if(rs.next()) {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    status.setText("Username gia presente");
+                                    Toast.makeText(RegistrazioneActivity.this, "username già presente", Toast.LENGTH_LONG).show();
 
                                 }
                             });
-
+                            c=1;
                             username.setText("");
                         }
-                       /* if(rs1.next()) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
 
-                                    Toast.makeText(RegistrazioneActivity.this, "email già presente", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    isSuccess = false;
+                    Log.e("SQL Error : ", e.getMessage());
+                }
+            }
+            try {
 
-                                }
-                            });
-                            email.setText("");
 
-                        }
-                        if(rs2.next()) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(RegistrazioneActivity.this, "nickname già presente", Toast.LENGTH_LONG).show();
-
-                                }
-                            });
-                            nickname.setText("");
-                        }*/
-                    } else {
+                    String sql1 = "SELECT * FROM Utente WHERE email = '" + email.getText()  + "' ";
+                    Statement stmt1 = con.createStatement();
+                    ResultSet rs1 = stmt1.executeQuery(sql1);
+                    if(rs1.next()) {
                         runOnUiThread(new Runnable() {
                             @Override
-                           public void run() {
-                                /*String sql3 = "INSERT INTO Utente (nome,cognome,email,username,password,DataNascita) VALUES ('"+nome.getText()+"','"+cognome.getText()+"','"+email.getText()+"','"+username.getText()+"','"+password.getText()+"','"+ c +"')";
-                                try {
-                                    stmt3 = con.createStatement();
-                                    stmt3.executeUpdate(sql3);
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                }*/
+                            public void run() {
+                                Toast.makeText(RegistrazioneActivity.this, "email già presente", Toast.LENGTH_LONG).show();
 
-
-                                status.setText("Registrazione avvenuta con successo");
                             }
                         });
-                       z = "Success";
+                        c=1;
+                        email.setText("");
+                    }
+
+
+
+
+            } catch (Exception e) {
+                isSuccess = false;
+                Log.e("SQL Error : ", e.getMessage());
+            }
+            try {
+
+
+                String sql1 = "SELECT * FROM Utente WHERE nickname = '" + nickname.getText()  + "' ";
+                Statement stmt1 = con.createStatement();
+                ResultSet rs1 = stmt1.executeQuery(sql1);
+                if(rs1.next()) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(RegistrazioneActivity.this, "nickname già presente", Toast.LENGTH_LONG).show();
+
+                        }
+                    });
+                    c=1;
+                    nickname.setText("");
+                }
+
+
+
+
+            } catch (Exception e) {
+                isSuccess = false;
+                Log.e("SQL Error : ", e.getMessage());
+            }
+
+                try {
+
+                    if(c==0) {
+                        String sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname) VALUES ('" + nome.getText() + "','" + cognome.getText() + "','" + email.getText() + "','" + username.getText() + "','" + password.getText() + "','" + nickname.getText() + "')";
+                        Statement stmt3 = con.createStatement();
+                        stmt3.executeUpdate(sql3);
+                        z = "Success";
 
                         Intent intent = new Intent(RegistrazioneActivity.this, MainActivity.class);
                         startActivity(intent);
@@ -249,7 +207,9 @@ public class RegistrazioneActivity extends AppCompatActivity {
                     isSuccess = false;
                     Log.e("SQL Error : ", e.getMessage());
                 }
-            }
+
+
+
             return z;
         }
     }

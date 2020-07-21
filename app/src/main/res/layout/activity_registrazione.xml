@@ -104,7 +104,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="60dp"
         android:layout_marginLeft="80dp"
-        android:layout_marginTop="425dp"
+        android:layout_marginTop="361dp"
         android:background="#ffffff"
         android:text="Visualizza nome e cognome" />
 
@@ -139,34 +139,8 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="76dp"
-        android:layout_marginTop="464dp"
+        android:layout_marginTop="405dp"
         android:text="Si" />
-
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="207dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textNomeCognome"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="394dp" />
-
-    <Button
-        android:id="@+id/pick_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/textcognome"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="13dp"
-        android:onClick="showDatePickerDialog"
-        android:text="Data di nascita" />
-
-    <TextView
-        android:id="@+id/status"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Status"
-        tools:text="Status" />
 
 </RelativeLayout>
 

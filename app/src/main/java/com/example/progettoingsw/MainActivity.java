@@ -107,6 +107,7 @@ public class MainActivity extends Activity {
         protected void onPostExecute(String s) {
             username.setText("");
             password.setText("");
+
         }
 
         @Override
@@ -127,6 +128,7 @@ public class MainActivity extends Activity {
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
 
+
                     if (rs.next()) {
                         runOnUiThread(new Runnable() {
                             @Override
@@ -135,9 +137,9 @@ public class MainActivity extends Activity {
                             }
                         });
                         z = "Success";
-
+                        String nickname=rs.getString("nickname");
                         Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                        intent.putExtra("sql",sql);
+                        intent.putExtra("nickname",nickname);
                         startActivity(intent);
                         finish();
                     } else {

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
@@ -24,6 +25,7 @@ public class RecensioneActivity extends AppCompatActivity {
     Connection con;
     EditText nomeStruttura;
     EditText citta;
+    Spinner spin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle e= getIntent().getExtras();
@@ -36,6 +38,7 @@ public class RecensioneActivity extends AppCompatActivity {
         Button bottone1=(Button) findViewById(R.id.button1);
         nomeStruttura=(EditText)findViewById(R.id.editNome);
         citta=(EditText)findViewById(R.id.editCitta);
+        spin=(Spinner)findViewById(R.id.spinner4);
         bottone1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,6 +94,7 @@ public class RecensioneActivity extends AppCompatActivity {
                     ;
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
+
 
                     if (rs.next()) {
                         runOnUiThread(new Runnable() {

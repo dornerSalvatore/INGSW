@@ -105,7 +105,8 @@ public class MainActivity extends Activity {
 
         @Override
         protected void onPostExecute(String s) {
-
+            username.setText("");
+            password.setText("");
         }
 
         @Override
@@ -115,7 +116,7 @@ public class MainActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(MainActivity.this,"Check Internet Connection",Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this,"Check DBMS Connection",Toast.LENGTH_LONG).show();
                     }
                 });
                 z = "On Internet Connection";
@@ -136,6 +137,7 @@ public class MainActivity extends Activity {
                         z = "Success";
 
                         Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                        intent.putExtra("sql",sql);
                         startActivity(intent);
                         finish();
                     } else {

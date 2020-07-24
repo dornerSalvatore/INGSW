@@ -111,7 +111,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(RegistrazioneActivity.this, "Check Internet Connection", Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegistrazioneActivity.this, "Check DBMS Connection", Toast.LENGTH_LONG).show();
                     }
                 });
                 z = "On Internet Connection";

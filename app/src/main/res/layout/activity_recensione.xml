@@ -28,9 +28,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="77dp"
-        android:layout_marginBottom="320dp"
+        android:layout_marginStart="79dp"
+        android:layout_marginLeft="79dp"
+        android:layout_marginBottom="260dp"
         android:background="#ffff"
         android:ems="10"
         android:gravity="start|top"
@@ -39,12 +39,20 @@
 
     <Spinner
         android:id="@+id/spinner4"
-        android:layout_width="match_parent"
+        android:layout_width="386dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="184dp"
-        android:layout_alignParentLeft="true" />
+        android:layout_marginStart="-1dp"
+        android:layout_marginLeft="-1dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginRight="26dp"
+        android:layout_marginBottom="471dp"
+        android:spinnerMode="dropdown"
+        android:visibility="visible" />
 
     <Button
         android:id="@+id/button1"
@@ -79,13 +87,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="79dp"
-        android:layout_marginLeft="79dp"
-        android:layout_marginBottom="481dp"
+        android:layout_marginStart="78dp"
+        android:layout_marginLeft="78dp"
+        android:layout_marginBottom="524dp"
         android:background="#ffff"
+        android:editable="false"
         android:ems="10"
-        android:hint="Nome Struttura"
-        android:inputType="text" />
+        android:inputType="none"
+        android:text="Strutture" />
 
     <EditText
         android:id="@+id/editCitta"
@@ -94,13 +103,15 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="78dp"
-        android:layout_marginLeft="78dp"
-        android:layout_marginBottom="424dp"
+        android:layout_marginStart="75dp"
+        android:layout_marginLeft="75dp"
+        android:layout_marginBottom="365dp"
         android:background="#ffff"
+        android:editable="false"
         android:ems="10"
+        android:enabled="true"
         android:hint="Citta"
-        android:inputType="text" />
+        android:inputType="none" />
 
 
 </RelativeLayout>

@@ -17,6 +17,7 @@
         android:layout_marginTop="34dp"
         android:background="#ffffff"
         android:ems="10"
+        android:enabled="true"
         android:hint="username"
         android:inputType="textPersonName" />
 

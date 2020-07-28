@@ -8,24 +8,32 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.progettoingsw.Connection.ConnectionClass;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
-public class RecensioneActivity extends AppCompatActivity {
+import static com.example.progettoingsw.Connection.ConnectionClass.pass;
+
+public class RecensioneActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
      String nickname;
     Connection con;
     EditText nomeStruttura;
     EditText citta;
+
     Spinner spin;
+    String z = null;
+    Boolean isSuccess = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle e= getIntent().getExtras();
@@ -39,6 +47,14 @@ public class RecensioneActivity extends AppCompatActivity {
         nomeStruttura=(EditText)findViewById(R.id.editNome);
         citta=(EditText)findViewById(R.id.editCitta);
         spin=(Spinner)findViewById(R.id.spinner4);
+
+        ArrayAdapter<String> adapter;
+        ArrayList<String> spinnerList;
+        spinnerList=new ArrayList<>();
+        adapter=new ArrayAdapter<String> (RecensioneActivity.this,android.R.layout.simple_spinner_dropdown_item,spinnerList);
+        spin.setAdapter(adapter);
+
+
         bottone1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -57,7 +73,53 @@ public class RecensioneActivity extends AppCompatActivity {
 
             }
         });
+        con = connectionClass(ConnectionClass.un.toString(), pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
+        if (con == null) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(RecensioneActivity.this, "Check DBMS Connection", Toast.LENGTH_LONG).show();
+                }
+            });}
+        else{
+            try{
+                String sql="Select Nome from Struttura";
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                while(rs.next())
+                {
+                    String nome=rs.getString("nome");
+                    spinnerList.add(nome);
+
+
+
+                }
+                adapter.notifyDataSetChanged();
+                spin.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+
+
+
+
+
+
+            }
+            catch (Exception f) {
+                isSuccess = false;
+                Log.e("SQL Error : ", f.getMessage());
+            }
+
+
+
+
+        }
+
+
+
     }
+
+
+
+
     public class aggiungiRecensione extends AsyncTask<String, String, String> {
         String z = null;
         Boolean isSuccess = false;
@@ -65,6 +127,7 @@ public class RecensioneActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
+
 
         }
 
@@ -79,7 +142,7 @@ public class RecensioneActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
 
-            con = connectionClass(ConnectionClass.un.toString(), ConnectionClass.pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
+            con = connectionClass(ConnectionClass.un.toString(), pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
             if (con == null) {
                 runOnUiThread(new Runnable() {
                     @Override
@@ -89,8 +152,9 @@ public class RecensioneActivity extends AppCompatActivity {
                 });
                 z = "On Internet Connection";
             } else {
+
                 try {
-                    String sql = "SELECT * FROM Struttura WHERE nome = '" + nomeStruttura.getText() + "' AND citta= '" + citta.getText() + "' ";
+                    String sql = "SELECT * FROM Struttura WHERE nome = '" + spin.getSelectedItem().toString() + "' AND citta= '" + citta.getText() + "' ";
                     ;
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
@@ -141,4 +205,35 @@ public class RecensioneActivity extends AppCompatActivity {
 
         return connection;
     }
+@Override
+    public void onItemSelected(AdapterView<?> parent, View view,
+                               int pos, long id) {
+
+            try {
+
+                String sql = "Select citta from Struttura where nome ='" + spin.getSelectedItem().toString() + "'";
+                Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+                if (rs.next()) {
+                    String nome = rs.getString("citta");
+                    citta.setText(nome);
+
+
+                }
+
+            } catch (Exception f) {
+                isSuccess = false;
+                Log.e("SQL Error : ", f.getMessage());
+            }
+
+        }
+
+@Override
+    public void onNothingSelected(AdapterView<?> parent) {
+        // Another interface callback
+    }
+
+
+
+
 }

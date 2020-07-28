@@ -29,11 +29,14 @@ public class MainActivity extends Activity {
     Button bottone3;
     Button bottone2;
     Button check1;
+    String valore;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
 
 
 
@@ -45,19 +48,24 @@ public class MainActivity extends Activity {
         bottone1=(Button) findViewById(R.id.bottone1);
         check1=(Button)findViewById(R.id.internet);
 
+
+
         bottone1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                valore=username.getText().toString();
+                if (valore.isEmpty()) {
+                    Toast.makeText(MainActivity.this, "campo username vuoto", Toast.LENGTH_LONG).show();
+                } else {
 
 
-                      bottone1.setOnClickListener(new View.OnClickListener() {
-                          @Override
-                          public void onClick(View view) {
-                              new MainActivity.checkLogin().execute("");
-                          }
-                      });
+                    new MainActivity.checkLogin().execute("");
+
+
+                }
             }
         });
+
 
 
 
@@ -101,6 +109,7 @@ public class MainActivity extends Activity {
         @Override
         protected void onPreExecute() {
 
+
         }
 
         @Override
@@ -112,7 +121,8 @@ public class MainActivity extends Activity {
 
         @Override
         protected String doInBackground(String... strings) {
-            con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
+
+
             if(con == null){
                 runOnUiThread(new Runnable() {
                     @Override
@@ -123,44 +133,45 @@ public class MainActivity extends Activity {
                 z = "On Internet Connection";
             }
             else {
-                try {
-                    String sql = "SELECT Nickname FROM Utente WHERE username = '" + username.getText() + "' AND passwd= '" + password.getText() + "' ";
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(sql);
+
+                    try {
+                        String sql = "SELECT Nickname FROM Utente WHERE username = '" + username.getText() + "' AND passwd= '" + password.getText() + "' ";
+                        Statement stmt = con.createStatement();
+                        ResultSet rs = stmt.executeQuery(sql);
 
 
-                    if (rs.next()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_LONG);
-                            }
-                        });
-                        z = "Success";
-                        String nickname=rs.getString("nickname");
-                        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                        intent.putExtra("nickname",nickname);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(MainActivity.this, "Check email or password", Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                        username.setText("");
-                        password.setText("");
+                        if (rs.next()) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_LONG);
+                                }
+                            });
+                            z = "Success";
+                            String nickname = rs.getString("nickname");
+                            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                            intent.putExtra("nickname", nickname);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, "Check email or password", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+                    } catch (Exception e) {
+                        isSuccess = false;
+                        Log.e("SQL Error : ", e.getMessage());
                     }
-                } catch (Exception e) {
-                    isSuccess = false;
-                    Log.e("SQL Error : ", e.getMessage());
                 }
-            }
+
             return z;
         }
     }
+
+
     @SuppressLint("NewApi")
     public Connection connectionClass(String user, String password, String database, String server){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -177,5 +188,4 @@ public class MainActivity extends Activity {
 
         return connection;
     }
-
         }

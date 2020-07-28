@@ -35,6 +35,7 @@ import java.util.Locale;
 
 public class RegistrazioneActivity extends AppCompatActivity {
 
+
     Connection con;
     EditText username;
     EditText password;
@@ -78,10 +79,11 @@ public class RegistrazioneActivity extends AppCompatActivity {
         bottone2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new RegistrazioneActivity.checkRegistrazione().execute(""); //codice per eseguire la connessione e interrogazione al DBMS
-                //Intent openPage1 = new Intent(RegistrazioneActivity.this,MainActivity.class);
-                // passo all'attivazione dell'activity Pagina.java
-                //startActivity(openPage1);
+                if (!controlEmail() | !controlNickname() | !controlPassword() | !controlUsername()) {
+                    return;
+                } else {
+                    new RegistrazioneActivity.checkRegistrazione().execute(""); //codice per eseguire la connessione e interrogazione al DBMS
+                }
             }
         });
     }
@@ -228,5 +230,70 @@ public class RegistrazioneActivity extends AppCompatActivity {
         }
 
         return connection;
+    }
+    private Boolean controlPassword() {
+        String val = password.getText().toString();
+        String passwordVal = "^" +
+                "(?=.*[0-9])" +         //at least 1 digit
+                //"(?=.*[a-z])" +         //at least 1 lower case letter
+                "(?=.*[A-Z])" +         //at least 1 upper case letter
+                "(?=.*[a-zA-Z])" +      //any letter
+                "(?=.*[@#$%^&+=])" +    //at least 1 special character
+                "(?=\\S+$)" +           //no white spaces
+                ".{4,}" +               //at least 4 characters
+                "$";
+
+        if (val.isEmpty()) {
+            password.setError("Field cannot be empty");
+            return false;
+        } else if (!val.matches(passwordVal)) {
+            password.setError("Password must contain at least 1 digit,1 upper case , no white space , at least 4 characters");
+            return false;
+        } else {
+            password.setError(null);
+            return true;
+        }
+    }
+
+    private Boolean controlUsername() {
+        String val = username.getText().toString();
+
+        if (val.isEmpty()) {
+            username.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            username.setError(null);
+            return true;
+        }
+    }
+
+    private Boolean controlEmail() {
+        String val = email.getText().toString();
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
+        if (val.isEmpty()) {
+            email.setError("Field cannot be empty");
+            return false;
+        } else if (!val.matches(emailPattern)) {
+            email.setError("Invalid email address");
+            return false;
+        } else {
+            email.setError(null);
+            return true;
+        }
+    }
+
+    private Boolean controlNickname() {
+        String val = nickname.getText().toString();
+
+        if (val.isEmpty()) {
+            nickname.setError("Field cannot be empty");
+            return false;
+        }
+        else {
+            nickname.setError(null);
+            return true;
+        }
     }
 }

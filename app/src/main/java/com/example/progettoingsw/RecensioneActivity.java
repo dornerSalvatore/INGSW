@@ -28,10 +28,11 @@ import static com.example.progettoingsw.Connection.ConnectionClass.pass;
 public class RecensioneActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
      String nickname;
     Connection con;
-    EditText nomeStruttura;
+    EditText tipologiaStruttura;
     EditText citta;
-
+    EditText commento;
     Spinner spin;
+    Spinner voto;
     String z = null;
     Boolean isSuccess = false;
     @Override
@@ -44,15 +45,26 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recensione);
         Button bottone1=(Button) findViewById(R.id.button1);
-        nomeStruttura=(EditText)findViewById(R.id.editNome);
+        tipologiaStruttura=(EditText)findViewById(R.id.editStruttura);
         citta=(EditText)findViewById(R.id.editCitta);
         spin=(Spinner)findViewById(R.id.spinner4);
+        voto=(Spinner)findViewById(R.id.voto);
+        commento=(EditText)findViewById(R.id.textCommento);
 
         ArrayAdapter<String> adapter;
         ArrayList<String> spinnerList;
         spinnerList=new ArrayList<>();
         adapter=new ArrayAdapter<String> (RecensioneActivity.this,android.R.layout.simple_spinner_dropdown_item,spinnerList);
         spin.setAdapter(adapter);
+        ArrayAdapter<String> adapter1;
+        ArrayList<String> spinnerList1;
+        spinnerList1=new ArrayList<>();
+        adapter1=new ArrayAdapter<String> (RecensioneActivity.this,android.R.layout.simple_spinner_dropdown_item,spinnerList1);
+        voto.setAdapter(adapter1);
+        for(int i=0;i<=5;i++)
+        {
+            spinnerList1.add(String.valueOf(i));
+        } adapter1.notifyDataSetChanged();
 
 
         bottone1.setOnClickListener(new View.OnClickListener() {
@@ -63,16 +75,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                 startActivity(openPage1);
             }
         });
-        Button bottone2=(Button) findViewById(R.id.button2);
-        bottone2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                // passo all'attivazione dell'activity Pagina.java
-                new RecensioneActivity.aggiungiRecensione().execute("");
-
-            }
-        });
         con = connectionClass(ConnectionClass.un.toString(), pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
         if (con == null) {
             runOnUiThread(new Runnable() {
@@ -83,7 +86,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
             });}
         else{
             try{
-                String sql="Select Nome from Struttura";
+                String sql="Select * from Struttura";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 while(rs.next())
@@ -112,6 +115,16 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
 
         }
+        Button bottone2=(Button) findViewById(R.id.button2);
+        bottone2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // passo all'attivazione dell'activity Pagina.java
+                new RecensioneActivity.aggiungiRecensione().execute("");
+
+            }
+        });
 
 
 
@@ -137,11 +150,12 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
 
 
+
+
         }
 
         @Override
         protected String doInBackground(String... strings) {
-
             con = connectionClass(ConnectionClass.un.toString(), pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
             if (con == null) {
                 runOnUiThread(new Runnable() {
@@ -149,37 +163,20 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                     public void run() {
                         Toast.makeText(RecensioneActivity.this, "Check DBMS Connection", Toast.LENGTH_LONG).show();
                     }
-                });
-                z = "On Internet Connection";
-            } else {
+                });}
+            else {
 
                 try {
-                    String sql = "SELECT * FROM Struttura WHERE nome = '" + spin.getSelectedItem().toString() + "' AND citta= '" + citta.getText() + "' ";
-                    ;
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(sql);
 
+                    String sql3 = "INSERT INTO Recensioni (Tipologia,Citta,Nome,Commento,Nickname) VALUES ('" + tipologiaStruttura.getText() + "','" + citta.getText() + "','" + spin.getSelectedItem().toString() + "','" + commento.getText() + "','" + nickname + "')";
+                    Statement stmt3 = con.createStatement();
+                    stmt3.executeUpdate(sql3);
+                    z = "Success";
 
-                    if (rs.next()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(RecensioneActivity.this, "Recensione Aggiunta", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(RecensioneActivity.this, MainActivity2.class);
+                    startActivity(intent);
+                    finish();
 
-                            }
-                        });
-
-                    }else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(RecensioneActivity.this, "Struttura non presente", Toast.LENGTH_LONG).show();
-                            }
-                        });
-
-                        nomeStruttura.setText("");
-                        citta.setText("");
-                    }
 
                 } catch (Exception e) {
                     isSuccess = false;
@@ -187,8 +184,9 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                 }
             }
 
-         return z;
+            return z;
         }
+
     }
     public Connection connectionClass(String user, String password, String database, String server){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -211,12 +209,14 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
             try {
 
-                String sql = "Select citta from Struttura where nome ='" + spin.getSelectedItem().toString() + "'";
+                String sql = "Select * from Struttura where nome ='" + spin.getSelectedItem().toString() + "'";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 if (rs.next()) {
                     String nome = rs.getString("citta");
                     citta.setText(nome);
+                    String tipologia=rs.getString("tipologia");
+                    tipologiaStruttura.setText(tipologia);
 
 
                 }

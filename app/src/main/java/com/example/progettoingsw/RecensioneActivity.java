@@ -71,6 +71,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
             @Override
             public void onClick(View view) {
                 Intent openPage1 = new Intent(RecensioneActivity.this,MainActivity2.class);
+                openPage1.putExtra("nickname",nickname);
                 // passo all'attivazione dell'activity Pagina.java
                 startActivity(openPage1);
             }
@@ -168,7 +169,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
                 try {
 
-                    String sql3 = "INSERT INTO Recensioni (Tipologia,Citta,Nome,Commento,Nickname) VALUES ('" + tipologiaStruttura.getText() + "','" + citta.getText() + "','" + spin.getSelectedItem().toString() + "','" + commento.getText() + "','" + nickname + "')";
+                    String sql3 = "INSERT INTO Recensioni (Id,Tipologia,Citta,Nome,Commento,Nickname) VALUES ('" + tipologiaStruttura.getText() + "','" + citta.getText() + "','" + spin.getSelectedItem().toString() + "','" + commento.getText() + "','" + nickname + "')";
                     Statement stmt3 = con.createStatement();
                     stmt3.executeUpdate(sql3);
                     z = "Success";

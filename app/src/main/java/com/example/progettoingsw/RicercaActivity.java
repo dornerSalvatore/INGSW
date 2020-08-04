@@ -203,12 +203,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
                     if (rs.next()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                //Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_LONG);
-                            }
-                        });
+
                         z = "Success";
 
                         Intent intent = new Intent(RicercaActivity.this, MapsActivity.class);

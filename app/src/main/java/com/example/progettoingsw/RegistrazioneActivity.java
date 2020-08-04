@@ -165,6 +165,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
                 isSuccess = false;
                 Log.e("SQL Error : ", e.getMessage());
             }
+
             try {
 
 

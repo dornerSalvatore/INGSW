@@ -35,6 +35,8 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
     Spinner voto;
     String z = null;
     Boolean isSuccess = false;
+    int id,control;
+    String indirizzo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle e= getIntent().getExtras();
@@ -111,6 +113,24 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                 isSuccess = false;
                 Log.e("SQL Error : ", f.getMessage());
             }
+            try {
+
+
+                String sql1 = "SELECT TOP 1 * FROM Recensioni ORDER BY ID DESC";
+                Statement stmt1 = con.createStatement();
+                ResultSet rs1 = stmt1.executeQuery(sql1);
+                if(rs1.next()){
+                    id=rs1.getInt("id");
+
+
+                }
+                id=id+1;
+
+
+            } catch (Exception c) {
+                isSuccess = false;
+                Log.e("SQL Error : ", c.getMessage());
+            }
 
 
 
@@ -141,8 +161,6 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
         @Override
         protected void onPreExecute() {
-
-
         }
 
         @Override
@@ -157,33 +175,50 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
         @Override
         protected String doInBackground(String... strings) {
-            con = connectionClass(ConnectionClass.un.toString(), pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
-            if (con == null) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(RecensioneActivity.this, "Check DBMS Connection", Toast.LENGTH_LONG).show();
-                    }
-                });}
-            else {
+            try {
+
+
+                String sql1 = "SELECT  * FROM Recensioni where nickname= '"+nickname +"' AND Indirizzo ='"+indirizzo+"'";
+                Statement stmt1 = con.createStatement();
+                ResultSet rs1 = stmt1.executeQuery(sql1);
+                if(rs1.next()){
+                    control=1;
+
+
+                }
+
+
+
+            } catch (Exception c) {
+                isSuccess = false;
+                Log.e("SQL Error : ", c.getMessage());
+            }
+
 
                 try {
-
-                    String sql3 = "INSERT INTO Recensioni (Id,Tipologia,Citta,Nome,Commento,Nickname) VALUES ('" + tipologiaStruttura.getText() + "','" + citta.getText() + "','" + spin.getSelectedItem().toString() + "','" + commento.getText() + "','" + nickname + "')";
+                    if(control==0){
+                    String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,indirizzo) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem().toString() + "','" + nickname + "','" + indirizzo + "')";
                     Statement stmt3 = con.createStatement();
                     stmt3.executeUpdate(sql3);
                     z = "Success";
 
                     Intent intent = new Intent(RecensioneActivity.this, MainActivity2.class);
+                    intent.putExtra("nickname", nickname);
                     startActivity(intent);
-                    finish();
+                    finish();}
+                    else{ runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(RecensioneActivity.this, "Gia è stata aggiunta una recensione a questa struttura", Toast.LENGTH_LONG).show();
+                        }
+                    });}
 
 
                 } catch (Exception e) {
                     isSuccess = false;
                     Log.e("SQL Error : ", e.getMessage());
                 }
-            }
+
 
             return z;
         }
@@ -218,6 +253,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                     citta.setText(nome);
                     String tipologia=rs.getString("tipologia");
                     tipologiaStruttura.setText(tipologia);
+                    indirizzo=rs.getString("indirizzo");
 
 
                 }

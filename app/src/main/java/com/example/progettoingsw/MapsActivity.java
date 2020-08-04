@@ -33,9 +33,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
 
-            LatLng firenze = new LatLng(43.776366, 11.247822);
-            mMap.addMarker(new MarkerOptions().position(firenze).title("Siamo a Firenze!"));
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(firenze).zoom(15).build();
+            LatLng napoli = new LatLng(40.8645644, 14.2795114);
+            mMap.addMarker(new MarkerOptions().position(napoli).title("Siamo a napoli"));
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(napoli).zoom(15).build();
 
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         }

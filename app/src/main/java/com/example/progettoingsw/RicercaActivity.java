@@ -3,6 +3,7 @@ package com.example.progettoingsw;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
@@ -38,6 +39,11 @@ import com.example.progettoingsw.Connection.ConnectionClass;
 import static com.example.progettoingsw.Connection.ConnectionClass.pass;
 
 public class RicercaActivity extends Activity implements AdapterView.OnItemSelectedListener {
+    Location gps_loc;
+    Location network_loc;
+    Location final_loc;
+    double longitude;
+    double latitude;
     Spinner spin;
     String nickname;
     Connection con;
@@ -53,6 +59,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         Bundle e= getIntent().getExtras();
         if(e!= null)
         {
@@ -246,55 +253,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
 
         return connection;
     }
-   /* @Override
-    public void onItemSelected(AdapterView<?> parent, View view,
-                               int pos, long id) {
 
-
-        try {
-            if(spin.getSelectedItem().toString()!="") {
-
-                String sql = "Select * from Struttura where tipologia ='" + spin.getSelectedItem().toString() + "'";
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                spinnerList1.clear();
-                spinnerList1.add("");
-                if (rs.next()) {
-                    String nome = rs.getString("prezzo");
-                    spinnerList1.add(nome);
-                    ;
-
-
-                }
-                adapter1.notifyDataSetChanged();
-            }
-            else{
-                spinnerList1.clear();
-                spinnerList1.add("");
-                int c=500;
-                for(int i=0;i<=10;i++)
-                    if(i==0)
-                spinnerList1.add(String.valueOf(i*10)+"£"+"-"+String.valueOf(i+5*10)+"£");
-                    else
-                        if(i>0&&i<5)spinnerList1.add(String.valueOf(i*100)+"£"+"-"+((i+1)*100)+"£");
-
-                    else
-                        if(i>5&&i<10) {
-                            int b=c+500;
-                            spinnerList1.add(String.valueOf((c)+"£"+"-"+(b))+"£");
-                            c=b;
-                        }
-                        else
-                            if (i==10) spinnerList1.add(">2500£");
-                adapter1.notifyDataSetChanged();
-            }
-
-
-        } catch (Exception f) {
-            Log.e("SQL Error : ", f.getMessage());
-        }
-
-    }*/
    private Boolean controlTipologia() {
        String val = spin.getSelectedItem().toString();
 

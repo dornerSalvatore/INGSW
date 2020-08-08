@@ -92,7 +92,7 @@ public class MainActivity extends Activity {
         check1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent openPage1 = new Intent(MainActivity.this,MainActivity3.class);
+                Intent openPage1 = new Intent(MainActivity.this,MapsActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
                 startActivity(openPage1);
             }

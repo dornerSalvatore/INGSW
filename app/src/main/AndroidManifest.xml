@@ -32,7 +32,9 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/title_activity_maps"
+            android:noHistory = "true"
+            android:launchMode="singleTask"/>
         <activity android:name=".RecensioneActivity" />
         <activity android:name=".RicercaActivity" />
         <activity android:name=".RegistrazioneActivity" />

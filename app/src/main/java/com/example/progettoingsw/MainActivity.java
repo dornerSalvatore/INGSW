@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
+
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -86,6 +87,7 @@ public class MainActivity extends Activity {
                 Intent openPage1 = new Intent(MainActivity.this,RegistrazioneActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
                 startActivity(openPage1);
+
             }
         });
 

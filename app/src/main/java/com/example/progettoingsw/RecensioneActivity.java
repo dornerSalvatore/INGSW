@@ -180,7 +180,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
             try {
 
 
-                String sql1 = "SELECT  * FROM Recensioni where nickname= '"+nickname +"' AND Latitudine ='"+latitudine+"' AND Longitudine ='"+longitudine+"'";
+                String sql1 = "SELECT  * FROM Recensioni where nickname= '"+nickname +"' AND Indirizzo ='"+indirizzo+"'";
                 Statement stmt1 = con.createStatement();
                 ResultSet rs1 = stmt1.executeQuery(sql1);
                 if(rs1.next()){
@@ -199,6 +199,12 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
                 try {
                     if(control==0){
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(RecensioneActivity.this, "Recensione Aggiunta", Toast.LENGTH_LONG).show();
+                            }
+                        });
                     String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,Indirizzo) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem().toString() + "','" + nickname + "','" + indirizzo + "')";
                     Statement stmt3 = con.createStatement();
                     stmt3.executeUpdate(sql3);

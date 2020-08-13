@@ -20,6 +20,20 @@ allprojects {
     }
 }
 
+
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+
+        // Add this line into `repositories` in `allprojects`
+        mavenCentral()
+    }
+}
+
+
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

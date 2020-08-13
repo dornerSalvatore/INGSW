@@ -92,7 +92,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
             });}
         else{
             try{
-                String sql="Select * from Struttura";
+                String sql="Select Distinct  Tipologia from Struttura";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
                 while(rs.next())

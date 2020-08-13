@@ -195,7 +195,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
                 try {
 
                     if(c==0) {
-                        String sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname) VALUES ('" + nome.getText() + "','" + cognome.getText() + "','" + email.getText() + "','" + username.getText() + "','" + password.getText() + "','" + nickname.getText() + "')";
+                        String sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname,FlagBlacklist) VALUES ('" + nome.getText() + "','" + cognome.getText() + "','" + email.getText() + "','" + username.getText() + "','" + password.getText() + "','" + nickname.getText() + "','"+ 0 + "')";
                         Statement stmt3 = con.createStatement();
                         stmt3.executeUpdate(sql3);
                         z = "Success";

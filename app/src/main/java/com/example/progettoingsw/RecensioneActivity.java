@@ -36,6 +36,8 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
     String z = null;
     Boolean isSuccess = false;
     int id,control;
+    String latitudine;
+    String longitudine;
     String indirizzo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +180,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
             try {
 
 
-                String sql1 = "SELECT  * FROM Recensioni where nickname= '"+nickname +"' AND Indirizzo ='"+indirizzo+"'";
+                String sql1 = "SELECT  * FROM Recensioni where nickname= '"+nickname +"' AND Latitudine ='"+latitudine+"' AND Longitudine ='"+longitudine+"'";
                 Statement stmt1 = con.createStatement();
                 ResultSet rs1 = stmt1.executeQuery(sql1);
                 if(rs1.next()){
@@ -197,7 +199,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
                 try {
                     if(control==0){
-                    String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,indirizzo) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem().toString() + "','" + nickname + "','" + indirizzo + "')";
+                    String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,Indirizzo,Latitudine,Longitudine) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem().toString() + "','" + nickname + "','" + indirizzo +  "','" + latitudine + "','" + longitudine +"')";
                     Statement stmt3 = con.createStatement();
                     stmt3.executeUpdate(sql3);
                     z = "Success";
@@ -253,6 +255,8 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                     citta.setText(nome);
                     String tipologia=rs.getString("tipologia");
                     tipologiaStruttura.setText(tipologia);
+                    latitudine=rs.getString("latitudine");
+                    longitudine=rs.getString("longitudine");
                     indirizzo=rs.getString("indirizzo");
 
 

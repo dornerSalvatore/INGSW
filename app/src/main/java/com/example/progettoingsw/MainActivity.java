@@ -30,7 +30,8 @@ public class MainActivity extends Activity {
     Button bottone3;
     Button bottone2;
     Button check1;
-    String valore;
+    String valore,valore1;
+    int flag=0;
 
 
     @Override
@@ -137,29 +138,33 @@ public class MainActivity extends Activity {
             else {
 
                     try {
-                        String sql = "SELECT Nickname FROM Utente WHERE username = '" + username.getText() + "' AND passwd= '" + password.getText() + "' ";
+                        String sql = "SELECT * FROM Utente WHERE username = '" + username.getText() + "' AND passwd= '" + password.getText() + "' ";
                         Statement stmt = con.createStatement();
                         ResultSet rs = stmt.executeQuery(sql);
 
 
-                        if (rs.next()) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //Toast.makeText(MainActivity.this, "Login Success", Toast.LENGTH_LONG);
-                                }
-                            });
+                        if (rs.next() ) {
+
                             z = "Success";
                             String nickname = rs.getString("nickname");
-                            Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                            intent.putExtra("nickname", nickname);
-                            startActivity(intent);
-                            finish();
+                            flag=rs.getInt("FlagBlacklist");
+                            if(flag==0){
+                                Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                                intent.putExtra("nickname", nickname);
+                                startActivity(intent);
+                                finish();}
+                            else{ runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(MainActivity.this, "Account Bloccato", Toast.LENGTH_LONG).show();
+                                }
+                            });}
+
                         } else {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(MainActivity.this, "Check email or password", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(MainActivity.this, "Check username or password", Toast.LENGTH_LONG).show();
                                 }
                             });
                         }

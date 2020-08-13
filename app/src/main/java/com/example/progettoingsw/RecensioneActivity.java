@@ -199,7 +199,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
                 try {
                     if(control==0){
-                    String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,Indirizzo,Latitudine,Longitudine) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem().toString() + "','" + nickname + "','" + indirizzo +  "','" + latitudine + "','" + longitudine +"')";
+                    String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,Indirizzo) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem().toString() + "','" + nickname + "','" + indirizzo + "')";
                     Statement stmt3 = con.createStatement();
                     stmt3.executeUpdate(sql3);
                     z = "Success";

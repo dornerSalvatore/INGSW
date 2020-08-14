@@ -107,11 +107,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="80dp"
-        android:layout_marginLeft="80dp"
-        android:layout_marginBottom="150dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="147dp"
         android:background="#B7EF0A26"
-        android:text="Indietro" />
+        android:text="Ricerca nei paraggi " />
 
     <Button
         android:id="@+id/button2"
@@ -120,9 +120,9 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="80dp"
-        android:layout_marginRight="81dp"
-        android:layout_marginBottom="150dp"
+        android:layout_marginEnd="68dp"
+        android:layout_marginRight="68dp"
+        android:layout_marginBottom="147dp"
         android:background="#B7EF0A26"
         android:text="Ricerca" />
 

@@ -35,7 +35,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
     Spinner voto;
     String z = null;
     Boolean isSuccess = false;
-    int id,control;
+    int id,control=0;
     String latitudine;
     String longitudine;
     String indirizzo;

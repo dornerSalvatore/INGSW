@@ -8,18 +8,21 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import java.lang.Object;
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import android.content.Intent;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.StrictMode;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -39,9 +42,6 @@ import com.example.progettoingsw.Connection.ConnectionClass;
 import static com.example.progettoingsw.Connection.ConnectionClass.pass;
 
 public class RicercaActivity extends Activity implements AdapterView.OnItemSelectedListener {
-    Location gps_loc;
-    Location network_loc;
-    Location final_loc;
     double longitude;
     double latitude;
     Spinner spin;
@@ -139,8 +139,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                  if(!controlTipologia() | !controlCitta() | !controlProvincia()){return;}
                  else
                  new RicercaActivity.Ricerca().execute("");
-                 //Intent intent = new Intent(RicercaActivity.this,MapsActivity.class);
-                 //startActivity(intent);
+
 
              }
          });
@@ -148,9 +147,9 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                  bottone2.setOnClickListener(new View.OnClickListener() {
                      @Override
                      public void onClick(View view) {
-                         Intent intent2 = new Intent();
-                         // passo all'attivazione dell'activity Pagina.java
-                         setResult(RESULT_OK, intent2);
+
+                         Intent intent2 = new Intent(RicercaActivity.this, MapsActivity.class);
+                         startActivity(intent2);
                          finish();
                      }
                  });
@@ -209,11 +208,12 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
 
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
-                    if (rs.next()) {
+                    if(rs.next()) {
+
 
                         z = "Success";
 
-                        Intent intent = new Intent(RicercaActivity.this, MapsActivity.class);
+                        Intent intent = new Intent(RicercaActivity.this, StrutturaActivity.class);
                         startActivity(intent);
                         finish();
 

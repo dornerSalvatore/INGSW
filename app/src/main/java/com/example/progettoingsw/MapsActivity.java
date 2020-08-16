@@ -31,6 +31,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -42,8 +43,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback/*GoogleMap.OnMarkerClickListener*/ {
 
     double longitude;
     double latitude;
@@ -70,6 +72,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+
 
 
 
@@ -118,7 +123,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                      longi=rs.getFloat("Longitudine");
                                                      lat=rs.getFloat("Latitudine");
                                                     LatLng lng1 = new LatLng(lat, longi);
-                                                    mMap.addMarker(new MarkerOptions().position(lng1).title(ind));
+                                                    MarkerOptions markerOpt = new MarkerOptions()
+                                                            .position(lng1).title(ind);
+                                                    mMap.addMarker(markerOpt);
+                                                    markerOpt.isVisible();
+
+
 
 
                                                 }
@@ -313,13 +323,25 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         @Override
         public void onMapReady(GoogleMap googleMap) {
             mMap = googleMap;
-            /*LatLng napoli = new LatLng(latitude,longitude);
-            mMap.addMarker(new MarkerOptions().position(napoli).title(indirizzo));
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(napoli).zoom(15).build();
+            //googleMap.setOnMarkerClickListener(this);
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+
+                @Override
+                public void onInfoWindowClick(Marker arg0) {
+                    if (arg0 != null && !arg0.getTitle().equals("sei qui")) {
+                        Intent intent1 = new Intent(MapsActivity.this, StrutturaActivity.class);
+                        startActivity(intent1);
+                    }
 
 
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));*/
+                }
+            });
         }
+
+
+
+
+
     @SuppressLint("NewApi")
     public Connection connectionClass(String user, String password, String database, String server){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();

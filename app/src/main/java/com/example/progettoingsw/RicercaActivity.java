@@ -7,6 +7,8 @@ import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
+
+import java.io.Serializable;
 import java.lang.Object;
 import java.sql.Array;
 import java.sql.Connection;
@@ -208,17 +210,37 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
 
                     Statement stmt = con.createStatement();
                     ResultSet rs = stmt.executeQuery(sql);
+                   ArrayList<String> strutture =new ArrayList<String>();
+                    //strutture.add("Nome "+" indirizzo "+" prezzo ");
+                    //strutture.add("Indirizzo");
+                    //strutture.add("Prezzo");
                     if(rs.next()) {
+
+                        strutture.add(rs.getString("nome")+": "+rs.getString("indirizzo"));
+                         //strutture.add(rs.getString("indirizzo"));
+                        //strutture.add(rs.getString("prezzo")+"£");
+
+                        while(rs.next()){
+                            strutture.add(rs.getString("nome")+": "+rs.getString("indirizzo"));
+                            //strutture.add(rs.getString("indirizzo"));
+                            //strutture.add(rs.getString("prezzo")+"£");
+
+                        }
+
+
 
 
                         z = "Success";
-
-                        Intent intent = new Intent(RicercaActivity.this, StrutturaActivity.class);
+                        Intent intent = new Intent(RicercaActivity.this, ListaStrutture.class);
+                        Bundle args = new Bundle();
+                        args.putSerializable("ARRAYLIST",(Serializable)strutture);
+                        intent.putExtra("strutture",args);
                         startActivity(intent);
-                        finish();
+
+                    }
 
 
-                    } else {
+                    else{
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

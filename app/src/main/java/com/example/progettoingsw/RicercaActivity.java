@@ -59,6 +59,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
     String testo;
     String testo1;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -220,6 +221,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                          //strutture.add(rs.getString("indirizzo"));
                         //strutture.add(rs.getString("prezzo")+"£");
 
+
                         while(rs.next()){
                             strutture.add(rs.getString("nome")+": "+rs.getString("indirizzo"));
                             //strutture.add(rs.getString("indirizzo"));
@@ -236,8 +238,9 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                         args.putSerializable("ARRAYLIST",(Serializable)strutture);
                         intent.putExtra("strutture",args);
                         startActivity(intent);
-
                     }
+
+
 
 
                     else{

@@ -217,13 +217,13 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                     //strutture.add("Prezzo");
                     if(rs.next()) {
 
-                        strutture.add(rs.getString("nome")+": "+rs.getString("indirizzo"));
+                        strutture.add(rs.getString("nome")+":"+rs.getString("indirizzo"));
                          //strutture.add(rs.getString("indirizzo"));
                         //strutture.add(rs.getString("prezzo")+"£");
 
 
                         while(rs.next()){
-                            strutture.add(rs.getString("nome")+": "+rs.getString("indirizzo"));
+                            strutture.add(rs.getString("nome")+":"+rs.getString("indirizzo"));
                             //strutture.add(rs.getString("indirizzo"));
                             //strutture.add(rs.getString("prezzo")+"£");
 

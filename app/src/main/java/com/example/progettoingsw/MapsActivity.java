@@ -55,9 +55,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     SupportMapFragment mapFragment;
     Connection con;
     String citta;
-    String ind;
+    String nome;
     float longi;
     float lat;
+    String ind;
 
 
 
@@ -119,12 +120,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                                 ResultSet rs = stmt.executeQuery(sql);
 
                                                 while(rs.next()) {
-                                                     ind = rs.getString("nome");
+                                                     nome = rs.getString("nome");
                                                      longi=rs.getFloat("Longitudine");
                                                      lat=rs.getFloat("Latitudine");
+                                                     ind=rs.getString("indirizzo");
                                                     LatLng lng1 = new LatLng(lat, longi);
                                                     MarkerOptions markerOpt = new MarkerOptions()
-                                                            .position(lng1).title(ind);
+                                                            .position(lng1).title(nome+":"+ind);
                                                     mMap.addMarker(markerOpt);
                                                     markerOpt.isVisible();
 
@@ -188,14 +190,50 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 if (addressList != null && addressList.size() > 0) {
                                     Address address = addressList.get(0);
                                     if (address.getAddressLine(0) != null && address.getAddressLine(0).length() > 0 && !address.getAddressLine(0).contentEquals("null")) {
-                                        indirizzo = address.getAddressLine(0);
-                                        mMap.addMarker(new MarkerOptions().position(lng).title(indirizzo));
-                                        CameraPosition cameraPosition = new CameraPosition.Builder().target(lng).zoom(20).build();
+                                        indirizzo = addressList.get(0).getAddressLine(0);
+                                        citta = addressList.get(0).getCountryName();
+                                        con = connectionClass(ConnectionClass.un.toString(), ConnectionClass.pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
+                                        if (con == null) {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(MapsActivity.this, "Check DBMS Connection", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
 
+                                        } else {
+                                            try {
+                                                String sql = "SELECT * FROM Struttura WHERE  latitudine >='"+(latitude-0.03)+"'AND latitudine <= '"+(latitude+0.03)+"'and longitudine >='"+(longitude-1)+"'AND longitudine <= '"+(longitude+1)+"'";
+
+                                                Statement stmt = con.createStatement();
+                                                ResultSet rs = stmt.executeQuery(sql);
+
+                                                while(rs.next()) {
+                                                    nome = rs.getString("nome");
+                                                    longi=rs.getFloat("Longitudine");
+                                                    lat=rs.getFloat("Latitudine");
+                                                    ind=rs.getString("indirizzo");
+                                                    LatLng lng1 = new LatLng(lat, longi);
+                                                    MarkerOptions markerOpt = new MarkerOptions()
+                                                            .position(lng1).title(nome+":"+ind);
+                                                    mMap.addMarker(markerOpt);
+                                                    markerOpt.isVisible();
+
+
+
+
+                                                }
+
+                                            } catch (Exception e) {
+
+                                                Log.e("SQL Error : ", e.getMessage());
+                                            }
+                                        }
+                                        mMap.addMarker(new MarkerOptions().position(lng).title("sei qui"));
+                                        CameraPosition cameraPosition = new CameraPosition.Builder().target(lng).zoom(15).build();
 
 
                                         mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
                                     }
                                 }
                             } catch (IOException e) {
@@ -238,83 +276,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 f.printStackTrace();
             }
 
-           /* if (gps_loc != null) {
-                final_loc = gps_loc;
-                latitude = final_loc.getLatitude();
-                longitude = final_loc.getLongitude();
-            }
-            else if (network_loc != null) {
-                final_loc = network_loc;
-                latitude = final_loc.getLatitude();
-                longitude = final_loc.getLongitude();
-            }
-            else {
-                latitude = 0.0;
-                longitude = 0.0;
-            }
-
-            mapFragment.getMapAsync(this);
-
-        }
-    @Override
-    public void onLocationChanged(Location location) {
-            if(location.getProvider()!=null) {
-
-                    latitude = location.getLatitude();
-                    longitude = location.getLongitude();
-                    Toast.makeText(this, "Lat: " + latitude + " Long: " + longitude, Toast.LENGTH_SHORT).show();
-                    Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-                    try {
-                        addressList = geocoder.getFromLocation(
-                                latitude, longitude, 1);
-                        if (addressList != null && addressList.size() > 0) {
-                            Address address = addressList.get(0);
-                            if (address.getAddressLine(0) != null && address.getAddressLine(0).length() > 0 && !address.getAddressLine(0).contentEquals("null")) {
-                                indirizzo = address.getAddressLine(0);
-                            }
-                        }
-
-                    } catch (IOException e) {
-                        //Log.e(TAG, "Unable connect to Geocoder", e);
-                    }
-
-
-                    mapFragment.getMapAsync(this);
-                }
-
-
-
-
-
-    }
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-
-        }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-
-
-    }
-
-
-
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Toast.makeText(MapsActivity.this,"Posizione disattivata",Toast.LENGTH_SHORT).show();
-
-        Intent openPage1 = new Intent(MapsActivity.this, MainActivity.class);
-        // passo all'attivazione dell'activity Pagina.java
-        startActivity(openPage1);
-        finish();
-
-
-
-*/
 
     }
 
@@ -330,6 +291,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 public void onInfoWindowClick(Marker arg0) {
                     if (arg0 != null && !arg0.getTitle().equals("sei qui")) {
                         Intent intent1 = new Intent(MapsActivity.this, StrutturaActivity.class);
+                        intent1.putExtra("string",arg0.getTitle());
                         startActivity(intent1);
                     }
 

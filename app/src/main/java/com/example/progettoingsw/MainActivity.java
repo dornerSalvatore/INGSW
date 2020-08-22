@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         bottone3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent openPage1 = new Intent(MainActivity.this,MainActivity.class);
+                Intent openPage1 = new Intent(MainActivity.this,RicercaActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
                 startActivityForResult(openPage1, 0);
             }
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()){
             case R.id.logout:{
-                Intent openPage1 = new Intent(MainActivity.this,RicercaActivity.class);
+                Intent openPage1 = new Intent(MainActivity.this,MainActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
                 startActivity(openPage1);
 

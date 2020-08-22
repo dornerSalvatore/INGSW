@@ -23,4 +23,7 @@ public class ExampleInstrumentedTest {
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("com.example.progettoingsw", appContext.getPackageName());
     }
+    public static void setupClass() {
+        throw new RuntimeException("Sorry dude, you won't find any test!");
+    }
 }

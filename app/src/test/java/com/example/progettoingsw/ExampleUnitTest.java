@@ -1,5 +1,6 @@
 package com.example.progettoingsw;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -13,5 +14,9 @@ public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
         assertEquals(4, 2 + 2);
+    }
+    @BeforeClass
+    public static void setupClass() {
+        throw new RuntimeException("Sorry dude, you won't find any test!");
     }
 }

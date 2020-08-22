@@ -9,6 +9,7 @@
     android:src="@drawable/forme">
 
 
+
     <TextView
         android:id="@+id/inf"
         android:layout_width="wrap_content"
@@ -16,7 +17,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="131dp"
         android:layout_marginLeft="131dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="80dp"
         android:text="nome"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"

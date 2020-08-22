@@ -4,24 +4,34 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends AppCompatActivity {
+
 
     Connection con;
     EditText username;
@@ -29,16 +39,24 @@ public class MainActivity extends Activity {
     Button bottone1;
     Button bottone3;
     Button bottone2;
-    Button check1;
+
     String valore,valore1;
     int flag=0;
 
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
+        androidx.appcompat.widget.Toolbar toolbar= (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+
+
+
+
 
 
 
@@ -48,7 +66,7 @@ public class MainActivity extends Activity {
         password = (EditText) findViewById(R.id.editTextTextPassword);
         username.setText(username.getText().toString());
         bottone1=(Button) findViewById(R.id.bottone1);
-        check1=(Button)findViewById(R.id.internet);
+
 
 
 
@@ -75,7 +93,7 @@ public class MainActivity extends Activity {
         bottone3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent openPage1 = new Intent(MainActivity.this,RicercaActivity.class);
+                Intent openPage1 = new Intent(MainActivity.this,MainActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
                 startActivityForResult(openPage1, 0);
             }
@@ -92,16 +110,29 @@ public class MainActivity extends Activity {
             }
         });
 
-        check1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent openPage1 = new Intent(MainActivity.this,MapsActivity.class);
-                // passo all'attivazione dell'activity Pagina.java
-                startActivity(openPage1);
-            }
-        });
 
         };
+
+   @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater=getMenuInflater();
+        menuInflater.inflate(R.menu.menu,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.logout:{
+                Intent openPage1 = new Intent(MainActivity.this,RicercaActivity.class);
+                // passo all'attivazione dell'activity Pagina.java
+                startActivity(openPage1);
+
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     public class checkLogin extends AsyncTask<String, String, String> {
 

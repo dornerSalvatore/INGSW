@@ -1,14 +1,21 @@
 package com.example.progettoingsw;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +33,7 @@ public class StrutturaActivity extends AppCompatActivity {
     String informa;
     String[] nomi ;
     Connection con;
+    boolean b=false;
 
 
     @Override
@@ -43,6 +51,8 @@ public class StrutturaActivity extends AppCompatActivity {
         TextView info1=(TextView) findViewById(R.id.indirizzo);
         info.setText(nomi[0]);
         info1.setText(nomi[1]);
+        androidx.appcompat.widget.Toolbar toolbar= (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
         if(con == null){
             runOnUiThread(new Runnable() {
@@ -88,6 +98,52 @@ public class StrutturaActivity extends AppCompatActivity {
         }
 
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        if(b)
+            menuInflater.inflate(R.menu.menu_login, menu);
+        else
+            menuInflater.inflate(R.menu.menu, menu);
+
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch(item.getItemId()){
+            case R.id.login:{
+
+                Dialog d=new Dialog(this);
+                d.setTitle("Login");
+                d.setCancelable(false);
+                d.setContentView(R.layout.dialog_login);
+                d.show();
+                ImageButton b=(ImageButton) d.findViewById(R.id.imageButton);
+                b.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View arg0)
+                    {
+                        d.dismiss();
+                    }
+                });
+
+            }}
+        switch(item.getItemId()){
+            case R.id.registra:{
+                Intent openPage1 = new Intent(StrutturaActivity.this,RegistrazioneActivity.class);
+                startActivity(openPage1);
+
+
+            }
+        }
+
+        return super.onOptionsItemSelected(item);
     }
     @SuppressLint("NewApi")
     public Connection connectionClass(String user, String password, String database, String server){

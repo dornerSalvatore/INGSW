@@ -6,8 +6,12 @@
     android:layout_height="match_parent"
     android:background="@drawable/sfondo"
     android:padding="0dp"
-    android:src="@drawable/forme">
-
+    android:src="@drawable/forme"
+    tools:menu="@menu/menu">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        app:menu="@menu/menu" />
 
 
     <TextView

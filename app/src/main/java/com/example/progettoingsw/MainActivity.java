@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -16,9 +17,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     Button bottone1;
     Button bottone3;
     Button bottone2;
+    boolean b=true;
 
     String valore,valore1;
     int flag=0;
@@ -115,18 +117,46 @@ public class MainActivity extends AppCompatActivity {
 
    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater=getMenuInflater();
-        menuInflater.inflate(R.menu.menu,menu);
+
+           MenuInflater menuInflater = getMenuInflater();
+           if(b)
+           menuInflater.inflate(R.menu.menu_login, menu);
+           else
+               menuInflater.inflate(R.menu.menu, menu);
+
+
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
         switch(item.getItemId()){
-            case R.id.logout:{
-                Intent openPage1 = new Intent(MainActivity.this,MainActivity.class);
+            case R.id.login:{
+                //Intent openPage1 = new Intent(MainActivity.this,MainActivity.class);
                 // passo all'attivazione dell'activity Pagina.java
+                //startActivity(openPage1);
+                Dialog d=new Dialog(this);
+                d.setTitle("Login");
+                d.setCancelable(false);
+                d.setContentView(R.layout.dialog_login);
+                d.show();
+                ImageButton b=(ImageButton) d.findViewById(R.id.imageButton);
+                b.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View arg0)
+                    {
+                       d.dismiss();
+                    }
+                });
+
+            }}
+            switch(item.getItemId()){
+            case R.id.registra:{
+                Intent openPage1 = new Intent(MainActivity.this,RegistrazioneActivity.class);
                 startActivity(openPage1);
+
 
             }
         }

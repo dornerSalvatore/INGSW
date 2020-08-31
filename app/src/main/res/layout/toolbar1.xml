@@ -3,10 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimary"
-    app:title="CV'19"
-    app:titleMarginStart="166dp"
+    android:background="#F0EE0053"
+    app:title="Filtri recensione"
+    app:titleMarginStart="120dp"
     app:titleTextAppearance="@style/TextAppearance.AppCompat.Large"
-    app:titleTextColor="#F8F8F8">
+    app:titleTextColor="#F8F8F8">>
 
 </androidx.appcompat.widget.Toolbar>

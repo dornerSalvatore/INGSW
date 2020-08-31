@@ -35,44 +35,57 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginStart="50dp"
-        android:layout_marginLeft="108dp"
-        android:layout_marginTop="295dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="280dp"
         android:layout_toEndOf="@+id/textView7"
         android:layout_toRightOf="@+id/textView7"
         android:text="indirizzo"
         android:textColor="#151515"
         android:textStyle="bold|italic" />
 
+
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="295dp"
+        android:layout_marginTop="280dp"
         android:text="Indirizzo"
         android:textColor="#171616"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="285dp"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="321dp">
+        android:layout_marginTop="321dp"
+        android:fillViewport="true" >
 
-        <LinearLayout
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="288dp"
-            android:orientation="horizontal">
+            android:layout_height="200dp">
 
+
+            <include
+                android:id="@+id/toolbar1"
+                layout="@layout/toolbar1"
+                app:menu="@menu/menu_filtri" />
 
             <ListView
+
                 android:id="@+id/lista"
-                android:layout_marginTop="60dp"
                 android:layout_width="match_parent"
-                android:layout_height="288dp" />
-        </LinearLayout>
+                android:layout_height="288dp"
+                android:layout_marginTop="70dp"
+                />
+
+
+
+
+        </RelativeLayout>
 
 
     </ScrollView>

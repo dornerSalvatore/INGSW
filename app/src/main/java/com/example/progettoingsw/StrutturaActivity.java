@@ -5,7 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,14 +36,21 @@ public class StrutturaActivity extends AppCompatActivity {
     String informa;
     String[] nomi ;
     Connection con;
-    boolean b=false;
+    boolean b=true;
+    Spinner spin;
+    String voto;
+    ArrayList<String> recensioni =new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+    TextView info1;
+    ListView mylist;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.struttura);
-        final ListView mylist = (ListView) findViewById(R.id.lista);
+         mylist = (ListView) findViewById(R.id.lista);
         Bundle e= getIntent().getExtras();
         if(e!= null)
         {
@@ -48,11 +58,20 @@ public class StrutturaActivity extends AppCompatActivity {
              nomi = informa.split(Pattern.quote(":"));
         }
         TextView info=(TextView) findViewById(R.id.inf);
-        TextView info1=(TextView) findViewById(R.id.indirizzo);
+        info1=(TextView) findViewById(R.id.indirizzo);
         info.setText(nomi[0]);
         info1.setText(nomi[1]);
         androidx.appcompat.widget.Toolbar toolbar= (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
+        androidx.appcompat.widget.Toolbar toolbar1= (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
+        toolbar1.inflateMenu(R.menu.menu_filtri);
+        toolbar1.setOnMenuItemClickListener(this::onOptionsItemSelected);
+         adapter=new ArrayAdapter<String>(this, R.layout.list,recensioni);
+
+
+        ;
+
+
         con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
         if(con == null){
             runOnUiThread(new Runnable() {
@@ -69,7 +88,7 @@ public class StrutturaActivity extends AppCompatActivity {
                 String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +  "' ";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
-                ArrayList<String> recensioni =new ArrayList<String>();
+
 
 
                 if (rs.next() ) {
@@ -78,7 +97,6 @@ public class StrutturaActivity extends AppCompatActivity {
                         recensioni.add(rs.getString("nickname")+":"+rs.getString("commento")+"\n"+"Voto : "+rs.getString("stelle"));
 
                     }
-                    ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, R.layout.list,recensioni);
                     mylist.setAdapter(adapter);
 
 
@@ -87,7 +105,6 @@ public class StrutturaActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(StrutturaActivity.this, "Check username or password", Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -99,8 +116,12 @@ public class StrutturaActivity extends AppCompatActivity {
 
 
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+
 
         MenuInflater menuInflater = getMenuInflater();
         if(b)
@@ -111,6 +132,7 @@ public class StrutturaActivity extends AppCompatActivity {
 
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
@@ -141,7 +163,109 @@ public class StrutturaActivity extends AppCompatActivity {
 
 
             }
+
         }
+        switch(item.getItemId()){
+            case R.id.menu_filtri:{
+                AlertDialog.Builder mBuilder=new AlertDialog.Builder(StrutturaActivity.this);
+                View mView=getLayoutInflater().inflate(R.layout.dialog_filtri,null);
+                mBuilder.setTitle("Filtri");
+                spin=(Spinner)mView.findViewById(R.id.rating_spinner);
+                ArrayAdapter<String> adapter1=new ArrayAdapter<String>(StrutturaActivity.this,android.R.layout.simple_spinner_item,getResources().getStringArray(R.array.stelle));
+                adapter1.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spin.setAdapter(adapter1);
+                mBuilder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        if(!spin.getSelectedItem().toString().equals("")) {
+                            try {
+                                String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +"' AND Stelle= '" + spin.getSelectedItem().toString()  + "' ";
+                                Statement stmt = con.createStatement();
+                                ResultSet rs = stmt.executeQuery(sql);
+
+
+                                if (rs.next()) {
+                                    recensioni.clear();
+                                    recensioni.add(rs.getString("nickname") + ":" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
+                                    while (rs.next()) {
+                                        recensioni.add(rs.getString("nickname") + ":" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
+
+                                    }
+                                    mylist.setAdapter(adapter);
+
+
+                                } else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            recensioni.clear();
+                                            mylist.setAdapter(adapter);
+                                            Toast.makeText(StrutturaActivity.this,"Nessuna recensione trovata",Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            } catch (Exception c) {
+
+                                Log.e("SQL Error : ", c.getMessage());
+                            }
+                        }
+                        else  {
+                            try {
+                                String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +  "' ";
+                                Statement stmt = con.createStatement();
+                                ResultSet rs = stmt.executeQuery(sql);
+
+
+
+                                if (rs.next() ) {
+                                    recensioni.clear();
+                                    recensioni.add(rs.getString("nickname")+":"+rs.getString("commento")+"\n"+"Voto : "+rs.getString("stelle"));
+                                    while(rs.next()){
+                                        recensioni.add(rs.getString("nickname")+":"+rs.getString("commento")+"\n"+"Voto : "+rs.getString("stelle"));
+
+                                    }
+                                    mylist.setAdapter(adapter);
+
+
+
+                                } else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            recensioni.clear();
+                                            mylist.setAdapter(adapter);
+                                            Toast.makeText(StrutturaActivity.this,"Nessuna recensione trovata",Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            } catch (Exception c) {
+
+                                Log.e("SQL Error : ", c.getMessage());
+                            }
+                        }
+
+
+
+
+                        dialogInterface.dismiss();
+
+
+
+
+                }
+                });
+                mBuilder.setNegativeButton("Dismiss", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                mBuilder.setView(mView);
+                AlertDialog dialog=mBuilder.create();
+                dialog.show();
+
+
+            }}
 
         return super.onOptionsItemSelected(item);
     }

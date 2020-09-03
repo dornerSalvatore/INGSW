@@ -48,6 +48,7 @@ public class StrutturaActivity extends AppCompatActivity {
     TextView info1;
     ListView mylist;
     String nickname;
+    Button aggiungi;
 
 
     @Override
@@ -72,6 +73,37 @@ public class StrutturaActivity extends AppCompatActivity {
         toolbar1.inflateMenu(R.menu.menu_filtri);
         toolbar1.setOnMenuItemClickListener(this::onOptionsItemSelected);
          adapter=new ArrayAdapter<String>(this, R.layout.list,recensioni);
+         aggiungi=(Button) findViewById(R.id.buttonAggiungi);
+        aggiungi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Dialog d=new Dialog(StrutturaActivity.this);
+                d.setTitle("Login");
+                d.setCancelable(false);
+                d.setContentView(R.layout.dialog_aggiungi);
+                d.show();
+                Spinner voto=(Spinner)d.findViewById(R.id.voto);
+                ArrayAdapter<String> adapter1;
+                ArrayList<String> spinnerList1;
+                spinnerList1=new ArrayList<>();
+                adapter1=new ArrayAdapter<String> (d.getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerList1);
+                voto.setAdapter(adapter1);
+                for(int i=0;i<=5;i++)
+                {
+                    spinnerList1.add(String.valueOf(i));
+                } adapter1.notifyDataSetChanged();
+                ImageButton b=(ImageButton) d.findViewById(R.id.imageButton);
+                b.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View arg0)
+                    {
+                        d.dismiss();
+                    }
+                });
+
+            }
+        });
 
 
         ;

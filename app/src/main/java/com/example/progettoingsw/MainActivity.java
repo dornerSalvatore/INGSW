@@ -30,6 +30,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
 
+import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
+import static com.example.progettoingsw.Connection.ConnectionClass.getLogIn;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     Button bottone3;
     Button bottone2;
     boolean b=true;
+
 
     String valore,valore1;
     int flag=0;
@@ -66,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
          username = (EditText) findViewById(R.id.editTextTextPersonName);
         username.setText(username.getText().toString());
         password = (EditText) findViewById(R.id.editTextTextPassword);
-        username.setText(username.getText().toString());
+        password.setText(password.getText().toString());
         bottone1=(Button) findViewById(R.id.bottone1);
 
 
@@ -186,7 +190,43 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
 
+           /* if(getLogIn(con,""+username.getText(),""+password.getText())==null)
+            { runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this,"Check DBMS Connection",Toast.LENGTH_LONG).show();
+                }
+            });
+                z = "On Internet Connection";}
+            else{
+                if(getLogIn(con,""+username.getText(),""+password.getText()).equals("Account Bloccato"))
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "Account Bloccato", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                else if( getLogIn(con,""+username.getText(),""+password.getText()).equals("Check username or password"))
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(MainActivity.this, "Check username or password", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                else {
+                    z = "Success";
 
+                        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
+                        intent.putExtra("nickname",getLogIn(con,""+username.getText(),""+password.getText() ));
+                        startActivity(intent);
+                        finish();
+                }
+
+            }*/
             if(con == null){
                 runOnUiThread(new Runnable() {
                     @Override
@@ -202,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
                         String sql = "SELECT * FROM Utente WHERE username = '" + username.getText() + "' AND passwd= '" + password.getText() + "' ";
                         Statement stmt = con.createStatement();
                         ResultSet rs = stmt.executeQuery(sql);
+
 
 
                         if (rs.next() ) {
@@ -240,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("NewApi")
+   /* @SuppressLint("NewApi")
     public Connection connectionClass(String user, String password, String database, String server){
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -255,5 +296,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return connection;
-    }
+    }*/
         }

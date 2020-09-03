@@ -17,6 +17,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -32,6 +34,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import static com.example.progettoingsw.Connection.ConnectionClass.getLogIn;
+
 public class StrutturaActivity extends AppCompatActivity {
     String informa;
     String[] nomi ;
@@ -43,7 +47,7 @@ public class StrutturaActivity extends AppCompatActivity {
     ArrayAdapter<String> adapter;
     TextView info1;
     ListView mylist;
-
+    String nickname;
 
 
     @Override
@@ -56,6 +60,7 @@ public class StrutturaActivity extends AppCompatActivity {
         {
             informa=e.getString("string");
              nomi = informa.split(Pattern.quote(":"));
+             nickname=e.getString("nickname");
         }
         TextView info=(TextView) findViewById(R.id.inf);
         info1=(TextView) findViewById(R.id.indirizzo);
@@ -124,7 +129,7 @@ public class StrutturaActivity extends AppCompatActivity {
 
 
         MenuInflater menuInflater = getMenuInflater();
-        if(b)
+        if(nickname==null)
             menuInflater.inflate(R.menu.menu_login, menu);
         else
             menuInflater.inflate(R.menu.menu, menu);
@@ -146,12 +151,72 @@ public class StrutturaActivity extends AppCompatActivity {
                 d.setContentView(R.layout.dialog_login);
                 d.show();
                 ImageButton b=(ImageButton) d.findViewById(R.id.imageButton);
+                EditText username;
+                EditText password;
+                username = (EditText) d.findViewById(R.id.user);
+                username.setText(username.getText().toString());
+                password = (EditText) d.findViewById(R.id.passw);
+                password.setText(password.getText().toString());
+                Button bottone1;
+                bottone1=(Button) d.findViewById(R.id.button3);
                 b.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
                     public void onClick(View arg0)
                     {
                         d.dismiss();
+                    }
+                });
+                bottone1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String valore=username.getText().toString();
+                        if (valore.isEmpty()) {
+                            Toast.makeText(StrutturaActivity.this, "campo username vuoto", Toast.LENGTH_LONG).show();
+                        } else {
+
+
+                            if(getLogIn(con,""+username.getText(),""+password.getText())==null)
+            { runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(StrutturaActivity.this,"Check DBMS Connection",Toast.LENGTH_LONG).show();
+                }
+            });
+               }
+            else{
+                if(getLogIn(con,""+username.getText(),""+password.getText()).equals("Account Bloccato"))
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(StrutturaActivity.this, "Account Bloccato", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                else if( getLogIn(con,""+username.getText(),""+password.getText()).equals("Check username or password"))
+                {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(StrutturaActivity.this, "Check username or password", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                else {
+
+
+                        Intent intent = new Intent(StrutturaActivity.this, StrutturaActivity.class);
+                        intent.putExtra("nickname",getLogIn(con,""+username.getText(),""+password.getText() ));
+                        intent.putExtra("string",informa);
+                        startActivity(intent);
+                        finish();
+                }
+
+            }
+
+
+                        }
                     }
                 });
 
@@ -164,6 +229,14 @@ public class StrutturaActivity extends AppCompatActivity {
 
             }
 
+        }
+        switch(item.getItemId()){
+            case R.id.logout:{
+                Intent openPage1 = new Intent(StrutturaActivity.this,MainActivity.class);
+                startActivity(openPage1);
+
+
+            }
         }
         switch(item.getItemId()){
             case R.id.menu_filtri:{

@@ -56,8 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
-        androidx.appcompat.widget.Toolbar toolbar= (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+
 
 
 
@@ -119,54 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
         };
 
-   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-           MenuInflater menuInflater = getMenuInflater();
-           if(b)
-           menuInflater.inflate(R.menu.menu_login, menu);
-           else
-               menuInflater.inflate(R.menu.menu, menu);
 
 
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch(item.getItemId()){
-            case R.id.login:{
-                //Intent openPage1 = new Intent(MainActivity.this,MainActivity.class);
-                // passo all'attivazione dell'activity Pagina.java
-                //startActivity(openPage1);
-                Dialog d=new Dialog(this);
-                d.setTitle("Login");
-                d.setCancelable(false);
-                d.setContentView(R.layout.dialog_login);
-                d.show();
-                ImageButton b=(ImageButton) d.findViewById(R.id.imageButton);
-                b.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View arg0)
-                    {
-                       d.dismiss();
-                    }
-                });
-
-            }}
-            switch(item.getItemId()){
-            case R.id.registra:{
-                Intent openPage1 = new Intent(MainActivity.this,RegistrazioneActivity.class);
-                startActivity(openPage1);
-
-
-            }
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     public class checkLogin extends AsyncTask<String, String, String> {
 
@@ -281,20 +234,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-   /* @SuppressLint("NewApi")
-    public Connection connectionClass(String user, String password, String database, String server){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String connectionURL = null;
-        try{
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";";
-            connection = DriverManager.getConnection(connectionURL);
-        }catch (Exception e){
-            Log.e("SQL Connection Error : ", e.getMessage());
-        }
 
-        return connection;
-    }*/
         }

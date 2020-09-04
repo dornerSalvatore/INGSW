@@ -34,7 +34,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
+import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
 import static com.example.progettoingsw.Connection.ConnectionClass.getLogIn;
+import static com.example.progettoingsw.Connection.ConnectionClass.getLogOut;
 
 public class StrutturaActivity extends AppCompatActivity {
     String informa;
@@ -128,23 +130,22 @@ public class StrutturaActivity extends AppCompatActivity {
 
 
 
-                if (rs.next() ) {
-                    recensioni.add(rs.getString("nickname")+":"+rs.getString("commento")+"\n"+"Voto : "+rs.getString("stelle"));
-                    while(rs.next()){
-                        recensioni.add(rs.getString("nickname")+":"+rs.getString("commento")+"\n"+"Voto : "+rs.getString("stelle"));
-
+                while (rs.next()) {
+                    String sql2 = "SELECT * FROM Utente WHERE nickname = '" + rs.getString("nickname") +  "' ";
+                    Statement stmt2 = con.createStatement();
+                    ResultSet  rs2 = stmt2.executeQuery(sql2);
+                    if(rs2.next()) {
+                        if (rs2.getInt("FlagNickname") != 0) {
+                            recensioni.add(rs.getString("nickname") + " \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
+                        } else
+                            recensioni.add(rs2.getString("nome") +"   "+ rs2.getString("cognome") +" \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
                     }
+
+                }
+
                     mylist.setAdapter(adapter);
 
 
-
-                } else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                        }
-                    });
-                }
             } catch (Exception c) {
 
                 Log.e("SQL Error : ", c.getMessage());
@@ -264,6 +265,7 @@ public class StrutturaActivity extends AppCompatActivity {
         }
         switch(item.getItemId()){
             case R.id.logout:{
+                getLogOut(con,nickname);
                 Intent openPage1 = new Intent(StrutturaActivity.this,MainActivity.class);
                 startActivity(openPage1);
 
@@ -289,26 +291,32 @@ public class StrutturaActivity extends AppCompatActivity {
                                 ResultSet rs = stmt.executeQuery(sql);
 
 
-                                if (rs.next()) {
-                                    recensioni.clear();
-                                    recensioni.add(rs.getString("nickname") + ":" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
-                                    while (rs.next()) {
-                                        recensioni.add(rs.getString("nickname") + ":" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
-
+                                recensioni.clear();
+                                while (rs.next()) {
+                                    String sql2 = "SELECT * FROM Utente WHERE nickname = '" + rs.getString("nickname") +  "' ";
+                                    Statement stmt2 = con.createStatement();
+                                    ResultSet  rs2 = stmt2.executeQuery(sql2);
+                                    if(rs2.next()) {
+                                        if (rs2.getInt("FlagNickname") != 0) {
+                                            recensioni.add(rs.getString("nickname") + " \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
+                                        } else
+                                            recensioni.add(rs2.getString("nome") +"   "+ rs2.getString("cognome") +" \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
                                     }
-                                    mylist.setAdapter(adapter);
 
-
-                                } else {
+                                }
+                                if(recensioni.isEmpty()){
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            recensioni.clear();
                                             mylist.setAdapter(adapter);
                                             Toast.makeText(StrutturaActivity.this,"Nessuna recensione trovata",Toast.LENGTH_LONG).show();
                                         }
                                     });
                                 }
+                                    mylist.setAdapter(adapter);
+
+
+
                             } catch (Exception c) {
 
                                 Log.e("SQL Error : ", c.getMessage());
@@ -321,28 +329,33 @@ public class StrutturaActivity extends AppCompatActivity {
                                 ResultSet rs = stmt.executeQuery(sql);
 
 
-
-                                if (rs.next() ) {
-                                    recensioni.clear();
-                                    recensioni.add(rs.getString("nickname")+":"+rs.getString("commento")+"\n"+"Voto : "+rs.getString("stelle"));
-                                    while(rs.next()){
-                                        recensioni.add(rs.getString("nickname")+":"+rs.getString("commento")+"\n"+"Voto : "+rs.getString("stelle"));
-
+                                recensioni.clear();
+                                while (rs.next()) {
+                                    String sql2 = "SELECT * FROM Utente WHERE nickname = '" + rs.getString("nickname") +  "' ";
+                                    Statement stmt2 = con.createStatement();
+                                    ResultSet  rs2 = stmt2.executeQuery(sql2);
+                                    if(rs2.next()) {
+                                        if (rs2.getInt("FlagNickname") != 0) {
+                                            recensioni.add(rs.getString("nickname") + " \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
+                                        } else
+                                            recensioni.add(rs2.getString("nome") +"   "+ rs2.getString("cognome") +" \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
                                     }
-                                    mylist.setAdapter(adapter);
 
-
-
-                                } else {
+                                }
+                                if(recensioni.isEmpty()){
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
-                                            recensioni.clear();
                                             mylist.setAdapter(adapter);
                                             Toast.makeText(StrutturaActivity.this,"Nessuna recensione trovata",Toast.LENGTH_LONG).show();
                                         }
                                     });
                                 }
+                                    mylist.setAdapter(adapter);
+
+
+
+
                             } catch (Exception c) {
 
                                 Log.e("SQL Error : ", c.getMessage());
@@ -374,20 +387,5 @@ public class StrutturaActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    @SuppressLint("NewApi")
-    public Connection connectionClass(String user, String password, String database, String server){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String connectionURL = null;
-        try{
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";";
-            connection = DriverManager.getConnection(connectionURL);
-        }catch (Exception e){
-            Log.e("SQL Connection Error : ", e.getMessage());
-        }
 
-        return connection;
-    }
 }

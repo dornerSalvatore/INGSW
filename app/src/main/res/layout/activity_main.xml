@@ -9,10 +9,7 @@
     android:src="@drawable/forme"
     tools:menu="@menu/menu">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar"
-        app:menu="@menu/menu" />
+
 
 
 

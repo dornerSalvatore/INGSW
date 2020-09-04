@@ -1,17 +1,31 @@
 package com.example.progettoingsw.Connection;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.StrictMode;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+
 import com.example.progettoingsw.MainActivity;
 import com.example.progettoingsw.MainActivity2;
 
+import net.sourceforge.jtds.jdbc.DateTime;
+
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+
+import static java.util.Calendar.DATE;
+import static java.util.Calendar.getInstance;
 
 public class ConnectionClass {
     public static String ip ="database-1.cqcdg0e6vlsg.us-east-2.rds.amazonaws.com"; // SQL Server IP Address
@@ -21,7 +35,7 @@ public class ConnectionClass {
 
     public static String getLogIn(Connection con,String username,String password)
     {
-        con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
+
         if(con == null){
            return null;
         }
@@ -53,17 +67,22 @@ public class ConnectionClass {
         }
 
     }
-    public static void getLogOut(Connection con,String nickname)
-    {
-        String data=null;
-        con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
+
+    public static void getLogOut(Connection con, String nickname)  {
+        Date data=new Date((System.currentTimeMillis()));
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String strDate = sdf.format(c.getTime());
+
+
+
         if(con == null){
 
         }
         else {
 
             try {
-                String sql = "Update Utente set TimeLogout= '" + data +"' where nickname= '" +nickname+ "'";
+                String sql = "Update Utente set TimeLogout= '" + strDate +"' where nickname= '" +nickname+ "'";
                 Statement stmt = con.createStatement();
                 stmt.executeUpdate(sql);
 

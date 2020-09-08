@@ -45,11 +45,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback/*GoogleMap.OnMarkerClickListener*/ {
 
     double longitude;
     double latitude;
-    List<Address> addressList;
+   String nickname;
     String indirizzo;
     LocationManager locationManager;
     SupportMapFragment mapFragment;
@@ -69,6 +71,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        Bundle e= getIntent().getExtras();
+        if(e!= null)
+        {
+            nickname=e.getString("nickname");
+        }
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -169,6 +176,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         public void onProviderDisabled(String provider) {
                             //Toast.makeText(MapsActivity.this,"Posizione disattivata",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MapsActivity.this, MainActivity.class);
+                            intent.putExtra("nickname",nickname);
                             startActivity(intent);
                             finish();
 
@@ -304,22 +312,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
 
-    @SuppressLint("NewApi")
-    public Connection connectionClass(String user, String password, String database, String server){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String connectionURL = null;
-        try{
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";";
-            connection = DriverManager.getConnection(connectionURL);
-        }catch (Exception e){
-            Log.e("SQL Connection Error : ", e.getMessage());
-        }
 
-        return connection;
-    }
 
 
     }

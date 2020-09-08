@@ -41,18 +41,17 @@ import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
 
+import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
 import static com.example.progettoingsw.Connection.ConnectionClass.pass;
 
 public class RicercaActivity extends Activity implements AdapterView.OnItemSelectedListener {
-    double longitude;
-    double latitude;
     Spinner spin;
     String nickname;
     Connection con;
     Spinner prezzo;
     ArrayList<String> spinnerList1;
     ArrayAdapter<String> adapter1;
-    ArrayList<String> prezziDefault;
+
     EditText nome;
     EditText citta;
     EditText provincia;
@@ -152,6 +151,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                      public void onClick(View view) {
 
                          Intent intent2 = new Intent(RicercaActivity.this, MapsActivity.class);
+                         intent2.putExtra("nickname",nickname);
                          startActivity(intent2);
                          finish();
                      }
@@ -237,6 +237,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                         Bundle args = new Bundle();
                         args.putSerializable("ARRAYLIST",(Serializable)strutture);
                         intent.putExtra("strutture",args);
+                        intent.putExtra("nickname",nickname);
                         startActivity(intent);
                     }
 
@@ -263,21 +264,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
 
         }
     }
-    public Connection connectionClass(String user, String password, String database, String server){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String connectionURL = null;
-        try{
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";";
-            connection = DriverManager.getConnection(connectionURL);
-        }catch (Exception e){
-            Log.e("SQL Connection Error : ", e.getMessage());
-        }
 
-        return connection;
-    }
 
    private Boolean controlTipologia() {
        String val = spin.getSelectedItem().toString();

@@ -36,7 +36,7 @@ import java.util.regex.Pattern;
 
 import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
 import static com.example.progettoingsw.Connection.ConnectionClass.getLogIn;
-import static com.example.progettoingsw.Connection.ConnectionClass.getLogOut;
+import static com.example.progettoingsw.Connection.ConnectionClass.setLogOut;
 
 public class StrutturaActivity extends AppCompatActivity {
     String informa;
@@ -44,7 +44,6 @@ public class StrutturaActivity extends AppCompatActivity {
     Connection con;
     boolean b=true;
     Spinner spin;
-    String voto;
     ArrayList<String> recensioni =new ArrayList<String>();
     ArrayAdapter<String> adapter;
     TextView info1;
@@ -265,7 +264,7 @@ public class StrutturaActivity extends AppCompatActivity {
         }
         switch(item.getItemId()){
             case R.id.logout:{
-                getLogOut(con,nickname);
+                setLogOut(con,nickname);
                 Intent openPage1 = new Intent(StrutturaActivity.this,MainActivity.class);
                 startActivity(openPage1);
 

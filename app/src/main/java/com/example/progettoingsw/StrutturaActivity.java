@@ -27,8 +27,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.progettoingsw.Connection.ConnectionClass;
 
+import com.example.progettoingsw.Dao.Recensione;
+import com.example.progettoingsw.Dao.RecensioneDaoImp;
+import com.example.progettoingsw.Dao.Utente;
 import com.example.progettoingsw.Dao.UtenteDaoImp;
-
 
 
 import java.sql.ResultSet;
@@ -37,10 +39,8 @@ import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 
-import static com.example.progettoingsw.Connection.ConnectionClass.checkRecensionePresente;
-
 import static com.example.progettoingsw.Connection.ConnectionClass.getTopRecensione;
-import static com.example.progettoingsw.Connection.ConnectionClass.saveRecensione;
+
 
 
 public class StrutturaActivity extends AppCompatActivity {
@@ -56,6 +56,9 @@ public class StrutturaActivity extends AppCompatActivity {
     Button aggiungi;
     ImageView image1;
     UtenteDaoImp utente;
+    RecensioneDaoImp recensione;
+    Utente u;
+    int t=0;
 
 
 
@@ -65,6 +68,7 @@ public class StrutturaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.struttura);
          utente=new UtenteDaoImp();
+         recensione=new RecensioneDaoImp();
          mylist = (ListView) findViewById(R.id.lista);
         Bundle e= getIntent().getExtras();
         if(e!= null)
@@ -117,7 +121,7 @@ public class StrutturaActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View arg0) {
                             int i=getTopRecensione();
-                            if(checkRecensionePresente(nickname,String.valueOf(info1.getText()))){
+                            if(recensione.checkRecensionePresente(nickname,String.valueOf(info1.getText()))){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -126,7 +130,7 @@ public class StrutturaActivity extends AppCompatActivity {
                                 });
                             }
                             else{
-                                saveRecensione(i,String.valueOf(commento.getText()),Integer.valueOf(String.valueOf(voto.getSelectedItem())),nickname,String.valueOf(info1.getText()));
+                                recensione.saveRecensione(i,String.valueOf(commento.getText()),Integer.valueOf(String.valueOf(voto.getSelectedItem())),nickname,String.valueOf(info1.getText()));
                                 Toast.makeText(StrutturaActivity.this,"Recensione aggiunta",Toast.LENGTH_LONG).show();
                                 d.dismiss();
                                 Intent intent = new Intent(StrutturaActivity.this, StrutturaActivity.class);
@@ -165,35 +169,27 @@ public class StrutturaActivity extends AppCompatActivity {
             });
 
         }
-        else {
+        ArrayList<Recensione> r= recensione.getRecensioniById(String.valueOf(info1.getText()));
+        for(int i=0;i<r.size();i++)
+        {
+           Recensione r1=r.get(i);
+            u=null;
+            u=r1.getAggiuntaDa();
 
-            try {
-                String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +  "' ";
-                Statement stmt = ConnectionClass.con.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
+            if(u!=null)
+            {
 
-
-
-                while (rs.next()) {
-                    String sql2 = "SELECT * FROM Utente WHERE nickname = '" + rs.getString("nickname") +  "' ";
-                    Statement stmt2 = ConnectionClass.con.createStatement();
-                    ResultSet  rs2 = stmt2.executeQuery(sql2);
-                    if(rs2.next()) {
-                        if (rs2.getInt("FlagNickname") != 0) {
-                            recensioni.add(rs.getString("nickname") + " \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
-                        } else
-                            recensioni.add(rs2.getString("nome") +"   "+ rs2.getString("cognome") +" \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
-                    }
-
+                if(u.getFlagNickname()!=0)
+                {
+                    recensioni.add(u.getNickname() + " \n" + r1.getCommento() + "\n" + "Voto : " + r1.getStelle());
                 }
-
-                    mylist.setAdapter(adapter);
-
-
-            } catch (Exception c) {
-
-                Log.e("SQL Error : ", c.getMessage());
+                else {
+                    recensioni.add(u.getNome() + "   " + u.getCognome() + " \n" + r1.getCommento() + "\n" + "Voto : " + r1.getStelle());
+                }
             }
+        }
+        mylist.setAdapter(adapter);
+
             try {
                 String sql = "SELECT LinkImg FROM Struttura WHERE indirizzo = '" + info1.getText() +  "' ";
                 Statement stmt = ConnectionClass.con.createStatement();
@@ -217,7 +213,7 @@ public class StrutturaActivity extends AppCompatActivity {
         }
 
 
-    }
+
 
 
 
@@ -351,7 +347,29 @@ public class StrutturaActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         if(!spin.getSelectedItem().toString().equals("")) {
-                            try {
+                            recensioni.clear();
+                            ArrayList<Recensione> r= recensione.getRecensioniByIdStelle(String.valueOf(info1.getText()),
+                                    Integer.valueOf(spin.getSelectedItem().toString()));
+                            for(int j=0;j<r.size();j++)
+                            {
+                                Recensione r1=r.get(j);
+                                u=null;
+                                u=r1.getAggiuntaDa();
+
+                                if(u!=null)
+                                {
+
+                                    if(u.getFlagNickname()!=0)
+                                    {
+                                        recensioni.add(u.getNickname() + " \n" + r1.getCommento() + "\n" + "Voto : " + r1.getStelle());
+                                    }
+                                    else {
+                                        recensioni.add(u.getNome() + "   " + u.getCognome() + " \n" + r1.getCommento() + "\n" + "Voto : " + r1.getStelle());
+                                    }
+                                }
+                            }
+
+                            /*try {
                                 String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +"' AND Stelle= '" + spin.getSelectedItem().toString()  + "' ";
                                 Statement stmt = ConnectionClass.con.createStatement();
                                 ResultSet rs = stmt.executeQuery(sql);
@@ -369,7 +387,7 @@ public class StrutturaActivity extends AppCompatActivity {
                                             recensioni.add(rs2.getString("nome") +"   "+ rs2.getString("cognome") +" \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
                                     }
 
-                                }
+                                }*/
                                 if(recensioni.isEmpty()){
                                     runOnUiThread(new Runnable() {
                                         @Override
@@ -383,13 +401,33 @@ public class StrutturaActivity extends AppCompatActivity {
 
 
 
-                            } catch (Exception c) {
+                            /*} catch (Exception c) {
 
                                 Log.e("SQL Error : ", c.getMessage());
-                            }
+                            }*/
                         }
                         else  {
-                            try {
+                            recensioni.clear();
+                            ArrayList<Recensione> r= recensione.getRecensioniById(String.valueOf(info1.getText()));
+                            for(int p=0;p<r.size();p++)
+                            {
+                                Recensione r1=r.get(p);
+                                u=null;
+                                u=r1.getAggiuntaDa();
+
+                                if(u!=null)
+                                {
+
+                                    if(u.getFlagNickname()!=0)
+                                    {
+                                        recensioni.add(u.getNickname() + " \n" + r1.getCommento() + "\n" + "Voto : " + r1.getStelle());
+                                    }
+                                    else {
+                                        recensioni.add(u.getNome() + "   " + u.getCognome() + " \n" + r1.getCommento() + "\n" + "Voto : " + r1.getStelle());
+                                    }
+                                }
+                            }
+                           /* try {
                                 String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +  "' ";
                                 Statement stmt = ConnectionClass.con.createStatement();
                                 ResultSet rs = stmt.executeQuery(sql);
@@ -407,7 +445,7 @@ public class StrutturaActivity extends AppCompatActivity {
                                             recensioni.add(rs2.getString("nome") +"   "+ rs2.getString("cognome") +" \n" + rs.getString("commento") + "\n" + "Voto : " + rs.getString("stelle"));
                                     }
 
-                                }
+                                }*/
                                 if(recensioni.isEmpty()){
                                     runOnUiThread(new Runnable() {
                                         @Override
@@ -422,10 +460,10 @@ public class StrutturaActivity extends AppCompatActivity {
 
 
 
-                            } catch (Exception c) {
+                           /* } catch (Exception c) {
 
                                 Log.e("SQL Error : ", c.getMessage());
-                            }
+                            }*/
                         }
 
 

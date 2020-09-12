@@ -7,11 +7,18 @@ import com.example.progettoingsw.Connection.ConnectionClass;
 import net.sourceforge.jtds.jdbc.DateTime;
 
 
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
+import static com.example.progettoingsw.Connection.ConnectionClass.db;
+import static com.example.progettoingsw.Connection.ConnectionClass.ip;
+import static com.example.progettoingsw.Connection.ConnectionClass.pass;
+import static com.example.progettoingsw.Connection.ConnectionClass.un;
 
 
 public class UtenteDaoImp {
@@ -44,7 +51,7 @@ public class UtenteDaoImp {
 
         try {
 
-            sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname,FlagBlacklist,FlagNickname) VALUES ('" + nome + "','" + cognome + "','" + email + "','" + username + "','" + passwd + "','" + nickname + "','" + '0' + "','" + FlagNickname + "')";
+            sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname,FlagBlacklist,FlagNickname,) VALUES ('" + nome + "','" + cognome + "','" + email + "','" + username + "','" + passwd + "','" + nickname + "','" + '0' + "','" + FlagNickname + "')";
             Statement stmt3 = ConnectionClass.con.createStatement();
             stmt3.executeUpdate(sql3);
 
@@ -117,8 +124,6 @@ public class UtenteDaoImp {
     public  void LogIn(String username, String password) {
 
 
-
-
         try {
             String sql = "SELECT * FROM Utente WHERE username = '" + username + "' AND passwd= '" + password + "' ";
             Statement stmt = ConnectionClass.con.createStatement();
@@ -127,7 +132,7 @@ public class UtenteDaoImp {
 
             if (rs.next()) {
 
-                utente=new Utente();
+                utente = new Utente();
                 utente.setNickname(rs.getString("nickname"));
                 utente.setFlagBlacklist(rs.getInt("FlagBlacklist"));
                 utente.setCognome(rs.getString("cognome"));
@@ -147,6 +152,26 @@ public class UtenteDaoImp {
     }
 
     public Utente getUtente() {
+        return utente;
+    }
+    public   Utente getUtenteByNickname(String nickname) {
+        utente=null;
+        try {
+        String sql2 = "SELECT * FROM Utente WHERE nickname = '" + nickname +  "' ";
+        Statement stmt2 = ConnectionClass.con.createStatement();
+        ResultSet  rs2 = stmt2.executeQuery(sql2);
+        if(rs2.next()) {
+            utente= new Utente(rs2.getString("nome"),rs2.getString("cognome"),rs2.getString("email"),rs2.getString("passwd"),rs2.getString("username"),
+                    rs2.getString("nickname"),rs2.getInt("FlagBlacklist"),rs2.getInt("FlagNickname"));
+            DateTime d= (DateTime)(rs2.getObject("TimeLogout"));
+            utente.setTimeLogout(d);
+        }
+
+      }  catch (Exception c) {
+
+        Log.e("SQL Error : ", c.getMessage());
+        }
+
         return utente;
     }
     public void  setUtente(Utente u){

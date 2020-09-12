@@ -2,6 +2,8 @@ package com.example.progettoingsw.Dao;
 
 import net.sourceforge.jtds.jdbc.DateTime;
 
+import java.sql.Date;
+
 public class Utente {
    private String nome;
      private String cognome;
@@ -26,7 +28,7 @@ public class Utente {
 
     }
 
-    public Utente(String nome, String cognome, String email, String passwd, String username, String nickname, int flagBlacklist, int flagNickname, DateTime timeLogout) {
+    public Utente(String nome, String cognome, String email, String passwd, String username, String nickname, int flagBlacklist, int flagNickname) {
         this.nome = nome;
         this.cognome = cognome;
         this.email = email;
@@ -35,7 +37,7 @@ public class Utente {
         this.nickname = nickname;
         this.FlagBlacklist = flagBlacklist;
         this.FlagNickname = flagNickname;
-        this.TimeLogout = timeLogout;
+
     }
 
     public String getNome() {

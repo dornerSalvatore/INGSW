@@ -45,7 +45,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/invia"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textCommento" />
 
@@ -60,12 +60,12 @@
         android:layout_marginBottom="52dp"
         android:layout_toEndOf="@+id/textVoto"
         android:layout_toRightOf="@+id/textVoto"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/invia"
         app:layout_constraintStart_toEndOf="@+id/textVoto"
         app:layout_constraintTop_toBottomOf="@+id/textCommento" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/invia"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

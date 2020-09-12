@@ -1,53 +1,46 @@
 package com.example.progettoingsw;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
+
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
-import androidx.annotation.NonNull;
+import android.widget.Toast;
+
+
+
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+
 
 import com.example.progettoingsw.Connection.ConnectionClass;
+import com.example.progettoingsw.Dao.UtenteDaoImp;
 
 import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
-import static com.example.progettoingsw.Connection.ConnectionClass.getLogIn;
+import static com.example.progettoingsw.Connection.ConnectionClass.setVisitatori;
 
 
 public class MainActivity extends AppCompatActivity {
 
 
-    Connection con;
+
     EditText username;
     EditText password;
     Button bottone1;
     Button bottone3;
     Button bottone2;
     boolean b=true;
+    String nickname;
 
 
-    String valore,valore1;
-    int flag=0;
+    String valore;
+
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -55,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
 
+        setVisitatori();
 
 
 
@@ -124,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
     public class checkLogin extends AsyncTask<String, String, String> {
 
         String z = null;
-        Boolean isSuccess = false;
 
 
         @Override
@@ -143,44 +135,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... strings) {
 
-           /* if(getLogIn(con,""+username.getText(),""+password.getText())==null)
-            { runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(MainActivity.this,"Check DBMS Connection",Toast.LENGTH_LONG).show();
-                }
-            });
-                z = "On Internet Connection";}
-            else{
-                if(getLogIn(con,""+username.getText(),""+password.getText()).equals("Account Bloccato"))
-                {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(MainActivity.this, "Account Bloccato", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-                else if( getLogIn(con,""+username.getText(),""+password.getText()).equals("Check username or password"))
-                {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(MainActivity.this, "Check username or password", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-                else {
-                    z = "Success";
 
-                        Intent intent = new Intent(MainActivity.this, MainActivity2.class);
-                        intent.putExtra("nickname",getLogIn(con,""+username.getText(),""+password.getText() ));
-                        startActivity(intent);
-                        finish();
-                }
-
-            }*/
-            if(con == null){
+            if(ConnectionClass.con == null){
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -190,32 +146,25 @@ public class MainActivity extends AppCompatActivity {
                 z = "On Internet Connection";
             }
             else {
-
-                    try {
-                        String sql = "SELECT * FROM Utente WHERE username = '" + username.getText() + "' AND passwd= '" + password.getText() + "' ";
-                        Statement stmt = con.createStatement();
-                        ResultSet rs = stmt.executeQuery(sql);
-
-
-
-                        if (rs.next() ) {
-
+                        UtenteDaoImp u=new UtenteDaoImp();
+                         u.LogIn(String.valueOf(username.getText()),String.valueOf(password.getText()));
+                        if(u.getUtente()!=null) {
                             z = "Success";
-                            String nickname = rs.getString("nickname");
-                            flag=rs.getInt("FlagBlacklist");
-                            if(flag==0){
+                            if (u.getUtente().getFlagBlacklist() == 0) {
+                                nickname = u.getUtente().getNickname();
                                 Intent intent = new Intent(MainActivity.this, MainActivity2.class);
                                 intent.putExtra("nickname", nickname);
                                 startActivity(intent);
-                                finish();}
-                            else{ runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(MainActivity.this, "Account Bloccato", Toast.LENGTH_LONG).show();
-                                }
-                            });}
-
-                        } else {
+                                finish();
+                            } else if (u.getUtente().getFlagBlacklist() == 1) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this, "Account Bloccato", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        }else {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -223,11 +172,12 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             });
                         }
-                    } catch (Exception e) {
-                        isSuccess = false;
-                        Log.e("SQL Error : ", e.getMessage());
-                    }
-                }
+                        }
+
+
+
+
+
 
             return z;
         }

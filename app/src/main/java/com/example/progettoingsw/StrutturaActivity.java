@@ -2,15 +2,13 @@ package com.example.progettoingsw;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.StrictMode;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,28 +18,34 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.progettoingsw.Connection.ConnectionClass;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
+import com.example.progettoingsw.Dao.UtenteDaoImp;
+
+
+
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
-import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
-import static com.example.progettoingsw.Connection.ConnectionClass.getLogIn;
-import static com.example.progettoingsw.Connection.ConnectionClass.setLogOut;
+
+import static com.example.progettoingsw.Connection.ConnectionClass.checkRecensionePresente;
+
+import static com.example.progettoingsw.Connection.ConnectionClass.getTopRecensione;
+import static com.example.progettoingsw.Connection.ConnectionClass.saveRecensione;
+
 
 public class StrutturaActivity extends AppCompatActivity {
     String informa;
     String[] nomi ;
-    Connection con;
     boolean b=true;
     Spinner spin;
     ArrayList<String> recensioni =new ArrayList<String>();
@@ -50,12 +54,17 @@ public class StrutturaActivity extends AppCompatActivity {
     ListView mylist;
     String nickname;
     Button aggiungi;
+    ImageView image1;
+    UtenteDaoImp utente;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.struttura);
+         utente=new UtenteDaoImp();
          mylist = (ListView) findViewById(R.id.lista);
         Bundle e= getIntent().getExtras();
         if(e!= null)
@@ -68,6 +77,7 @@ public class StrutturaActivity extends AppCompatActivity {
         info1=(TextView) findViewById(R.id.indirizzo);
         info.setText(nomi[0]);
         info1.setText(nomi[1]);
+         image1= (ImageView) findViewById(R.id.imageView);
         androidx.appcompat.widget.Toolbar toolbar= (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar);
         androidx.appcompat.widget.Toolbar toolbar1= (androidx.appcompat.widget.Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -78,31 +88,67 @@ public class StrutturaActivity extends AppCompatActivity {
         aggiungi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Dialog d=new Dialog(StrutturaActivity.this);
-                d.setTitle("Login");
-                d.setCancelable(false);
-                d.setContentView(R.layout.dialog_aggiungi);
-                d.show();
-                Spinner voto=(Spinner)d.findViewById(R.id.voto);
-                ArrayAdapter<String> adapter1;
-                ArrayList<String> spinnerList1;
-                spinnerList1=new ArrayList<>();
-                adapter1=new ArrayAdapter<String> (d.getContext(),android.R.layout.simple_spinner_dropdown_item,spinnerList1);
-                voto.setAdapter(adapter1);
-                for(int i=0;i<=5;i++)
-                {
-                    spinnerList1.add(String.valueOf(i));
-                } adapter1.notifyDataSetChanged();
-                ImageButton b=(ImageButton) d.findViewById(R.id.imageButton);
-                b.setOnClickListener(new View.OnClickListener()
-                {
-                    @Override
-                    public void onClick(View arg0)
-                    {
-                        d.dismiss();
+                if (nickname != null) {
+                    Dialog d = new Dialog(StrutturaActivity.this);
+                    d.setTitle("Login");
+                    d.setCancelable(false);
+                    d.setContentView(R.layout.dialog_aggiungi);
+                    d.show();
+                    Spinner voto = (Spinner) d.findViewById(R.id.voto);
+                    ArrayAdapter<String> adapter1;
+                    ArrayList<String> spinnerList1;
+                    spinnerList1 = new ArrayList<>();
+                    adapter1 = new ArrayAdapter<String>(d.getContext(), android.R.layout.simple_spinner_dropdown_item, spinnerList1);
+                    voto.setAdapter(adapter1);
+                    for (int i = 0; i <= 5; i++) {
+                        spinnerList1.add(String.valueOf(i));
                     }
-                });
+                    adapter1.notifyDataSetChanged();
+                    ImageButton b = (ImageButton) d.findViewById(R.id.imageButton);
+                    TextView commento=(TextView)d.findViewById(R.id.textCommento);
+                    b.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View arg0) {
+                            d.dismiss();
+                        }
+                    });
+                    Button b1=(Button) d.findViewById(R.id.invia);
+                    b1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View arg0) {
+                            int i=getTopRecensione();
+                            if(checkRecensionePresente(nickname,String.valueOf(info1.getText()))){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(StrutturaActivity.this,"Recensione gia presente su questa struttura",Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                            else{
+                                saveRecensione(i,String.valueOf(commento.getText()),Integer.valueOf(String.valueOf(voto.getSelectedItem())),nickname,String.valueOf(info1.getText()));
+                                Toast.makeText(StrutturaActivity.this,"Recensione aggiunta",Toast.LENGTH_LONG).show();
+                                d.dismiss();
+                                Intent intent = new Intent(StrutturaActivity.this, StrutturaActivity.class);
+                                intent.putExtra("nickname", nickname);
+                                intent.putExtra("string",informa);
+                                startActivity(intent);
+                                finish();
 
+                            }
+                        }
+                    });
+
+
+                }
+                else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(StrutturaActivity.this,"Devi esssere loggato",Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
             }
         });
 
@@ -110,8 +156,7 @@ public class StrutturaActivity extends AppCompatActivity {
         ;
 
 
-        con =connectionClass(ConnectionClass.un.toString(),ConnectionClass.pass.toString(),ConnectionClass.db.toString(),ConnectionClass.ip.toString());
-        if(con == null){
+        if(ConnectionClass.con == null){
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -124,14 +169,14 @@ public class StrutturaActivity extends AppCompatActivity {
 
             try {
                 String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +  "' ";
-                Statement stmt = con.createStatement();
+                Statement stmt = ConnectionClass.con.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
 
 
 
                 while (rs.next()) {
                     String sql2 = "SELECT * FROM Utente WHERE nickname = '" + rs.getString("nickname") +  "' ";
-                    Statement stmt2 = con.createStatement();
+                    Statement stmt2 = ConnectionClass.con.createStatement();
                     ResultSet  rs2 = stmt2.executeQuery(sql2);
                     if(rs2.next()) {
                         if (rs2.getInt("FlagNickname") != 0) {
@@ -144,6 +189,26 @@ public class StrutturaActivity extends AppCompatActivity {
 
                     mylist.setAdapter(adapter);
 
+
+            } catch (Exception c) {
+
+                Log.e("SQL Error : ", c.getMessage());
+            }
+            try {
+                String sql = "SELECT LinkImg FROM Struttura WHERE indirizzo = '" + info1.getText() +  "' ";
+                Statement stmt = ConnectionClass.con.createStatement();
+                ResultSet rs = stmt.executeQuery(sql);
+
+
+
+                if (rs.next()) {
+
+
+                    Glide.with(this)
+                            .load(rs.getString("LinkImg"))
+                            .into(image1);
+
+                }
 
             } catch (Exception c) {
 
@@ -205,54 +270,56 @@ public class StrutturaActivity extends AppCompatActivity {
                         String valore=username.getText().toString();
                         if (valore.isEmpty()) {
                             Toast.makeText(StrutturaActivity.this, "campo username vuoto", Toast.LENGTH_LONG).show();
-                        } else {
-
-
-                            if(getLogIn(con,""+username.getText(),""+password.getText())==null)
-            { runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(StrutturaActivity.this,"Check DBMS Connection",Toast.LENGTH_LONG).show();
-                }
-            });
-               }
-            else{
-                if(getLogIn(con,""+username.getText(),""+password.getText()).equals("Account Bloccato"))
-                {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(StrutturaActivity.this, "Account Bloccato", Toast.LENGTH_LONG).show();
                         }
-                    });
-                }
-                else if( getLogIn(con,""+username.getText(),""+password.getText()).equals("Check username or password"))
-                {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(StrutturaActivity.this, "Check username or password", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                }
-                else {
+                        else {
 
+                            if(ConnectionClass.con==null)
+                               { runOnUiThread(new Runnable() {
+                              @Override
+                                public void run() {
+                                  Toast.makeText(StrutturaActivity.this,"Check DBMS Connection",Toast.LENGTH_LONG).show();
+                                }
+                             });
+                               }
+                            else{
 
-                        Intent intent = new Intent(StrutturaActivity.this, StrutturaActivity.class);
-                        intent.putExtra("nickname",getLogIn(con,""+username.getText(),""+password.getText() ));
-                        intent.putExtra("string",informa);
-                        startActivity(intent);
-                        finish();
-                }
+                                utente.LogIn(String.valueOf(username.getText()),String.valueOf(password.getText()));
+                                if(utente.getUtente()!=null) {
 
-            }
-
+                                    if (utente.getUtente().getFlagBlacklist() == 0) {
+                                        nickname = utente.getUtente().getNickname();
+                                        Intent intent = new Intent(StrutturaActivity.this, StrutturaActivity.class);
+                                        intent.putExtra("nickname", nickname);
+                                        intent.putExtra("string",informa);
+                                        startActivity(intent);
+                                        finish();
+                                    } else if (utente.getUtente().getFlagBlacklist() == 1) {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(StrutturaActivity.this, "Account Bloccato", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                }else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(StrutturaActivity.this, "Check username or password", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                            }
 
                         }
+
+
                     }
+
                 });
 
-            }}
+            }
+        }
         switch(item.getItemId()){
             case R.id.registra:{
                 Intent openPage1 = new Intent(StrutturaActivity.this,RegistrazioneActivity.class);
@@ -264,7 +331,7 @@ public class StrutturaActivity extends AppCompatActivity {
         }
         switch(item.getItemId()){
             case R.id.logout:{
-                setLogOut(con,nickname);
+                utente.setLogOut(nickname);
                 Intent openPage1 = new Intent(StrutturaActivity.this,MainActivity.class);
                 startActivity(openPage1);
 
@@ -286,14 +353,14 @@ public class StrutturaActivity extends AppCompatActivity {
                         if(!spin.getSelectedItem().toString().equals("")) {
                             try {
                                 String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +"' AND Stelle= '" + spin.getSelectedItem().toString()  + "' ";
-                                Statement stmt = con.createStatement();
+                                Statement stmt = ConnectionClass.con.createStatement();
                                 ResultSet rs = stmt.executeQuery(sql);
 
 
                                 recensioni.clear();
                                 while (rs.next()) {
                                     String sql2 = "SELECT * FROM Utente WHERE nickname = '" + rs.getString("nickname") +  "' ";
-                                    Statement stmt2 = con.createStatement();
+                                    Statement stmt2 = ConnectionClass.con.createStatement();
                                     ResultSet  rs2 = stmt2.executeQuery(sql2);
                                     if(rs2.next()) {
                                         if (rs2.getInt("FlagNickname") != 0) {
@@ -324,14 +391,14 @@ public class StrutturaActivity extends AppCompatActivity {
                         else  {
                             try {
                                 String sql = "SELECT * FROM Recensioni WHERE indirizzo = '" + info1.getText() +  "' ";
-                                Statement stmt = con.createStatement();
+                                Statement stmt = ConnectionClass.con.createStatement();
                                 ResultSet rs = stmt.executeQuery(sql);
 
 
                                 recensioni.clear();
                                 while (rs.next()) {
                                     String sql2 = "SELECT * FROM Utente WHERE nickname = '" + rs.getString("nickname") +  "' ";
-                                    Statement stmt2 = con.createStatement();
+                                    Statement stmt2 = ConnectionClass.con.createStatement();
                                     ResultSet  rs2 = stmt2.executeQuery(sql2);
                                     if(rs2.next()) {
                                         if (rs2.getInt("FlagNickname") != 0) {

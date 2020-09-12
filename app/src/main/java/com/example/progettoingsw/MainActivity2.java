@@ -1,6 +1,6 @@
 package com.example.progettoingsw;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,11 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
+import com.example.progettoingsw.Dao.UtenteDaoImp;
 
 import java.sql.Connection;
 
 import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
-import static com.example.progettoingsw.Connection.ConnectionClass.setLogOut;
 
 public class MainActivity2 extends Activity {
     String nickname;
@@ -57,7 +57,8 @@ public class MainActivity2 extends Activity {
             @Override
             public void onClick(View view) {
                 Intent openPage1 = new Intent(MainActivity2.this,MainActivity.class);
-                setLogOut(con,nickname);
+                UtenteDaoImp utente=new UtenteDaoImp();
+                utente.setLogOut(nickname);
                 // passo all'attivazione dell'activity Pagina.java
                 startActivity(openPage1);
             }

@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,16 +12,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 import com.example.progettoingsw.Connection.ConnectionClass;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
+import static com.example.progettoingsw.Connection.ConnectionClass.getTopRecensione;
 import static com.example.progettoingsw.Connection.ConnectionClass.pass;
 
 public class RecensioneActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
@@ -115,7 +114,8 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                 isSuccess = false;
                 Log.e("SQL Error : ", f.getMessage());
             }
-            try {
+            id=getTopRecensione();
+           /* try {
 
 
                 String sql1 = "SELECT TOP 1 * FROM Recensioni ORDER BY ID DESC";
@@ -132,13 +132,13 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
             } catch (Exception c) {
                 isSuccess = false;
                 Log.e("SQL Error : ", c.getMessage());
-            }
+            }*/
 
 
 
 
         }
-        Button bottone2=(Button) findViewById(R.id.button2);
+        Button bottone2=(Button) findViewById(R.id.invia);
         bottone2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,7 +177,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
         @Override
         protected String doInBackground(String... strings) {
-            try {
+            /*try {
 
 
                 String sql1 = "SELECT  * FROM Recensioni where nickname= '"+nickname +"' AND Indirizzo ='"+indirizzo+"'";
@@ -194,20 +194,21 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
             } catch (Exception c) {
                 isSuccess = false;
                 Log.e("SQL Error : ", c.getMessage());
-            }
+            }*/
 
 
-                try {
-                    if(control==0){
+               // try {
+                    if(!ConnectionClass.checkRecensionePresente(nickname,indirizzo)){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(RecensioneActivity.this, "Recensione Aggiunta", Toast.LENGTH_LONG).show();
                             }
                         });
-                    String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,Indirizzo) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem().toString() + "','" + nickname + "','" + indirizzo + "')";
+                   /* String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,Indirizzo) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem() + "','" + nickname + "','" + indirizzo + "')";
                     Statement stmt3 = con.createStatement();
-                    stmt3.executeUpdate(sql3);
+                    stmt3.executeUpdate(sql3);*/
+                   ConnectionClass.saveRecensione(id,String.valueOf(commento.getText()), Integer.valueOf(String.valueOf(voto.getSelectedItem())),nickname,indirizzo);
                     z = "Success";
 
                     Intent intent = new Intent(RecensioneActivity.this, MainActivity2.class);
@@ -222,31 +223,17 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                     });}
 
 
-                } catch (Exception e) {
+                /*} catch (Exception e) {
                     isSuccess = false;
                     Log.e("SQL Error : ", e.getMessage());
-                }
+                }*/
 
 
             return z;
         }
 
     }
-    public Connection connectionClass(String user, String password, String database, String server){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String connectionURL = null;
-        try{
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";";
-            connection = DriverManager.getConnection(connectionURL);
-        }catch (Exception e){
-            Log.e("SQL Connection Error : ", e.getMessage());
-        }
 
-        return connection;
-    }
 @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {

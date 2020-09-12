@@ -3,37 +3,20 @@ package com.example.progettoingsw;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.lang.Object;
-import	java.text.Format;
-import java.text.DateFormat;
-import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
+
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
+import com.example.progettoingsw.Dao.UtenteDaoImp;
 
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
 
 public class RegistrazioneActivity extends AppCompatActivity {
 
@@ -47,6 +30,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
     EditText cognome;
     RadioButton visualizza;
     int c =0;
+    UtenteDaoImp utente;
 
 
 
@@ -61,7 +45,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
         nome=(EditText) findViewById(R.id.textnome);
         cognome=(EditText) findViewById(R.id.textcognome);
         visualizza=(RadioButton) findViewById(R.id.visualizzaNomeCognome);
-
+       utente=new UtenteDaoImp();
 
 
 
@@ -79,7 +63,7 @@ public class RegistrazioneActivity extends AppCompatActivity {
                 startActivity(openPage1);
             }
         });
-        Button bottone2=(Button) findViewById(R.id.button2);
+        Button bottone2=(Button) findViewById(R.id.invia);
         bottone2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,14 +91,14 @@ public class RegistrazioneActivity extends AppCompatActivity {
 
 
 
+
         }
 
         @RequiresApi(api = Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1)
         @Override
         protected String doInBackground(String... strings) {
 
-            con = connectionClass(ConnectionClass.un.toString(), ConnectionClass.pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
-            if (con == null) {
+            if (ConnectionClass.con == null) {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -123,121 +107,68 @@ public class RegistrazioneActivity extends AppCompatActivity {
                 });
                 z = "On Internet Connection";
             } else {
-                try {
-                    String sql = "SELECT * FROM Utente WHERE username = '" + username.getText() + "' ";
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(sql);
-
-                    if (rs.next()) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(RegistrazioneActivity.this, "username già presente", Toast.LENGTH_LONG).show();
-
-                            }
-                        });
-                        c = 1;
-                        username.setText("");
-                    }
-
-                } catch (Exception e) {
-                    isSuccess = false;
-                    Log.e("SQL Error : ", e.getMessage());
-                }
-            }
-            try {
-
-
-                String sql1 = "SELECT * FROM Utente WHERE email = '" + email.getText() + "' ";
-                Statement stmt1 = con.createStatement();
-                ResultSet rs1 = stmt1.executeQuery(sql1);
-                if (rs1.next()) {
+                z = "Success";
+              if (! utente.checkUsername(String.valueOf(username.getText()))) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(RegistrazioneActivity.this, "email già presente", Toast.LENGTH_LONG).show();
+                            Toast.makeText(RegistrazioneActivity.this, "username già presente", Toast.LENGTH_LONG).show();
+                            c=1;
 
+                            username.setText("");
                         }
                     });
-                    c = 1;
-                    email.setText("");
+
+
                 }
-
-
-            } catch (Exception e) {
-                isSuccess = false;
-                Log.e("SQL Error : ", e.getMessage());
-            }
-
-            try {
-
-
-                String sql1 = "SELECT * FROM Utente WHERE nickname = '" + nickname.getText() + "' ";
-                Statement stmt1 = con.createStatement();
-                ResultSet rs1 = stmt1.executeQuery(sql1);
-                if (rs1.next()) {
+               if (!utente.checkNickname(String.valueOf(nickname.getText()))) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             Toast.makeText(RegistrazioneActivity.this, "nickname già presente", Toast.LENGTH_LONG).show();
-
+                            c=1;
+                            nickname.setText("");
                         }
                     });
-                    c = 1;
-                    nickname.setText("");
+
+
+
                 }
+                if (!utente.checkEmail(String.valueOf(email.getText()))) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(RegistrazioneActivity.this, "email già presente", Toast.LENGTH_LONG).show();
+                            c=1;
+                            email.setText("");
+                        }
+                    });
 
 
-            } catch (Exception e) {
-                isSuccess = false;
-                Log.e("SQL Error : ", e.getMessage());
+                }
+                if(c==0) {
+                    if (utente.checkEmail(String.valueOf(email.getText())) && utente.checkNickname(String.valueOf(nickname.getText())) && utente.checkUsername(String.valueOf(username.getText()))) {
+                        if (visualizza.isChecked()) {
+                            utente.saveUtente(String.valueOf(nome.getText()), String.valueOf(cognome.getText()), String.valueOf(email.getText()), String.valueOf(password.getText()), String.valueOf(username.getText()), String.valueOf(nickname.getText()), 0);
+                        } else {
+                            utente.saveUtente(String.valueOf(nome.getText()), String.valueOf(cognome.getText()), String.valueOf(email.getText()), String.valueOf(password.getText()), String.valueOf(username.getText()), String.valueOf(nickname.getText()), 1);
+                        }
+                        Intent intent = new Intent(RegistrazioneActivity.this, MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
             }
 
-            try {
 
-                if (c == 0) {
-                    String sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname,FlagBlacklist,FlagNickname) VALUES ('" + nome.getText() + "','" + cognome.getText() + "','" + email.getText() + "','" + username.getText() + "','" + password.getText() + "','" + nickname.getText() + "','" + '0' + "','"  + '1' + "')";
-
-
-                    if (visualizza.isChecked()) {
-                        sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname,FlagBlacklist,FlagNickname) VALUES ('" + nome.getText() + "','" + cognome.getText() + "','" + email.getText() + "','" + username.getText() + "','" + password.getText() + "','" + nickname.getText() + "','" + '0' +"','"  + '0' + "')";
-                    }
-                    Statement stmt3 = con.createStatement();
-                    stmt3.executeUpdate(sql3);
-                    z = "Success";
-
-                    Intent intent = new Intent(RegistrazioneActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    finish();
-
-
-                }
-                } catch (Exception e) {
-                    isSuccess = false;
-                    Log.e("SQL Error : ", e.getMessage());
-                }
 
 
 
             return z;
         }
     }
-    @SuppressLint("NewApi")
-    public Connection connectionClass(String user, String password, String database, String server){
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        Connection connection = null;
-        String connectionURL = null;
-        try{
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            connectionURL = "jdbc:jtds:sqlserver://" + server+"/" + database + ";user=" + user + ";password=" + password + ";";
-            connection = DriverManager.getConnection(connectionURL);
-        }catch (Exception e){
-            Log.e("SQL Connection Error : ", e.getMessage());
-        }
 
-        return connection;
-    }
+
     private Boolean controlPassword() {
         String val = password.getText().toString();
         String passwordVal = "^" +

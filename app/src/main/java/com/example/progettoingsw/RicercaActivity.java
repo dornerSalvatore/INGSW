@@ -1,42 +1,29 @@
 package com.example.progettoingsw;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
-import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
+
 
 import java.io.Serializable;
-import java.lang.Object;
-import java.sql.Array;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+
 
 import android.content.Intent;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.os.StrictMode;
-import android.provider.ContactsContract;
+
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.inputmethod.EditorInfo;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
@@ -134,7 +121,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
 
         }
 
-         Button bottone1=(Button) findViewById(R.id.button2);
+         Button bottone1=(Button) findViewById(R.id.invia);
          bottone1.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {

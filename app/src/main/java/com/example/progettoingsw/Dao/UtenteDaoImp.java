@@ -21,7 +21,7 @@ import static com.example.progettoingsw.Connection.ConnectionClass.pass;
 import static com.example.progettoingsw.Connection.ConnectionClass.un;
 
 
-public class UtenteDaoImp {
+public class UtenteDaoImp implements UtenteDaoInterface{
     private Utente utente;
 
     public  void setLogOut( String nickname) {

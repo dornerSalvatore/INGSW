@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 import com.example.progettoingsw.Connection.ConnectionClass;
+import com.example.progettoingsw.Dao.Recensione;
+import com.example.progettoingsw.Dao.RecensioneDaoImp;
+import com.example.progettoingsw.Dao.Struttura;
+import com.example.progettoingsw.Dao.StrutturaDaoImp;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -34,10 +38,12 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
     Spinner voto;
     String z = null;
     Boolean isSuccess = false;
-    int id,control=0;
-    String latitudine;
-    String longitudine;
+    int id;
+    float latitudine;
+   float  longitudine;
     String indirizzo;
+    RecensioneDaoImp recensione;
+    StrutturaDaoImp struttura;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle e= getIntent().getExtras();
@@ -53,7 +59,8 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
         spin=(Spinner)findViewById(R.id.spinner4);
         voto=(Spinner)findViewById(R.id.voto);
         commento=(EditText)findViewById(R.id.textCommento);
-
+        recensione=new RecensioneDaoImp();
+        struttura=new StrutturaDaoImp();
         ArrayAdapter<String> adapter;
         ArrayList<String> spinnerList;
         spinnerList=new ArrayList<>();
@@ -89,50 +96,19 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                 }
             });}
         else{
-            try{
-                String sql="Select * from Struttura";
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                while(rs.next())
-                {
-                    String nome=rs.getString("nome");
-                    spinnerList.add(nome);
+            ArrayList<Struttura> r= struttura.getListaStrutture();
+            for(Struttura s: r)
+            {
 
 
-
-                }
-                adapter.notifyDataSetChanged();
-                spin.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-
-
-
-
-
-
+                spinnerList.add(s.getNome());
             }
-            catch (Exception f) {
-                isSuccess = false;
-                Log.e("SQL Error : ", f.getMessage());
-            }
+            adapter.notifyDataSetChanged();
+            spin.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+
+
             id=getTopRecensione();
-           /* try {
 
-
-                String sql1 = "SELECT TOP 1 * FROM Recensioni ORDER BY ID DESC";
-                Statement stmt1 = con.createStatement();
-                ResultSet rs1 = stmt1.executeQuery(sql1);
-                if(rs1.next()){
-                    id=rs1.getInt("id");
-
-
-                }
-                id=id+1;
-
-
-            } catch (Exception c) {
-                isSuccess = false;
-                Log.e("SQL Error : ", c.getMessage());
-            }*/
 
 
 
@@ -177,38 +153,16 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 
         @Override
         protected String doInBackground(String... strings) {
-            /*try {
 
-
-                String sql1 = "SELECT  * FROM Recensioni where nickname= '"+nickname +"' AND Indirizzo ='"+indirizzo+"'";
-                Statement stmt1 = con.createStatement();
-                ResultSet rs1 = stmt1.executeQuery(sql1);
-                if(rs1.next()){
-                    control=1;
-
-
-                }
-
-
-
-            } catch (Exception c) {
-                isSuccess = false;
-                Log.e("SQL Error : ", c.getMessage());
-            }*/
-
-
-               // try {
-                    if(!ConnectionClass.checkRecensionePresente(nickname,indirizzo)){
+                    if(!recensione.checkRecensionePresente(nickname,indirizzo)){
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Toast.makeText(RecensioneActivity.this, "Recensione Aggiunta", Toast.LENGTH_LONG).show();
                             }
                         });
-                   /* String sql3 = "INSERT INTO Recensioni (Id,Commento,Stelle,Nickname,Indirizzo) VALUES ('" + id +"','" + commento.getText() + "','" + voto.getSelectedItem() + "','" + nickname + "','" + indirizzo + "')";
-                    Statement stmt3 = con.createStatement();
-                    stmt3.executeUpdate(sql3);*/
-                   ConnectionClass.saveRecensione(id,String.valueOf(commento.getText()), Integer.valueOf(String.valueOf(voto.getSelectedItem())),nickname,indirizzo);
+
+                   recensione.saveRecensione(id,String.valueOf(commento.getText()), Integer.valueOf(String.valueOf(voto.getSelectedItem())),nickname,indirizzo);
                     z = "Success";
 
                     Intent intent = new Intent(RecensioneActivity.this, MainActivity2.class);
@@ -223,10 +177,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
                     });}
 
 
-                /*} catch (Exception e) {
-                    isSuccess = false;
-                    Log.e("SQL Error : ", e.getMessage());
-                }*/
+
 
 
             return z;
@@ -237,28 +188,18 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
 @Override
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
+    Struttura struttura1=struttura.getStrutturaByNome(spin.getSelectedItem().toString());
+    if(struttura1!=null)
+    {
+        String nome = struttura1.getCitta();
+        citta.setText(nome);
+        String tipologia=struttura1.getTipologia();
+        tipologiaStruttura.setText(tipologia);
+        latitudine=struttura1.getLatitudine();
+        longitudine=struttura1.getLongitudine();
+        indirizzo=struttura1.getIndirizzo();
+    }
 
-            try {
-
-                String sql = "Select * from Struttura where nome ='" + spin.getSelectedItem().toString() + "'";
-                Statement stmt = con.createStatement();
-                ResultSet rs = stmt.executeQuery(sql);
-                if (rs.next()) {
-                    String nome = rs.getString("citta");
-                    citta.setText(nome);
-                    String tipologia=rs.getString("tipologia");
-                    tipologiaStruttura.setText(tipologia);
-                    latitudine=rs.getString("latitudine");
-                    longitudine=rs.getString("longitudine");
-                    indirizzo=rs.getString("indirizzo");
-
-
-                }
-
-            } catch (Exception f) {
-                isSuccess = false;
-                Log.e("SQL Error : ", f.getMessage());
-            }
 
         }
 

@@ -29,12 +29,12 @@ import com.example.progettoingsw.Connection.ConnectionClass;
 
 import com.example.progettoingsw.Dao.Recensione;
 import com.example.progettoingsw.Dao.RecensioneDaoImp;
+import com.example.progettoingsw.Dao.StrutturaDaoImp;
 import com.example.progettoingsw.Dao.Utente;
 import com.example.progettoingsw.Dao.UtenteDaoImp;
 
 
-import java.sql.ResultSet;
-import java.sql.Statement;
+
 import java.util.ArrayList;
 import java.util.regex.Pattern;
 
@@ -57,6 +57,7 @@ public class StrutturaActivity extends AppCompatActivity {
     ImageView image1;
     UtenteDaoImp utente;
     RecensioneDaoImp recensione;
+    StrutturaDaoImp struttura;
     Utente u;
     int t=0;
 
@@ -69,6 +70,7 @@ public class StrutturaActivity extends AppCompatActivity {
         setContentView(R.layout.struttura);
          utente=new UtenteDaoImp();
          recensione=new RecensioneDaoImp();
+         struttura=new StrutturaDaoImp();
          mylist = (ListView) findViewById(R.id.lista);
         Bundle e= getIntent().getExtras();
         if(e!= null)
@@ -189,8 +191,17 @@ public class StrutturaActivity extends AppCompatActivity {
             }
         }
         mylist.setAdapter(adapter);
+        String imm=struttura.getLinkImgByInd(String.valueOf(info1.getText()));
 
-            try {
+        if (imm!=null) {
+
+
+            Glide.with(this)
+                    .load(imm)
+                    .into(image1);}
+
+
+            /*try {
                 String sql = "SELECT LinkImg FROM Struttura WHERE indirizzo = '" + info1.getText() +  "' ";
                 Statement stmt = ConnectionClass.con.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
@@ -209,7 +220,7 @@ public class StrutturaActivity extends AppCompatActivity {
             } catch (Exception c) {
 
                 Log.e("SQL Error : ", c.getMessage());
-            }
+            }*/
         }
 
 

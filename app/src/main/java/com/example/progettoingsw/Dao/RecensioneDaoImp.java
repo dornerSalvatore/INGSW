@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 
-public class RecensioneDaoImp {
+public class RecensioneDaoImp implements RecensioneDaoInterface {
     Recensione recensione;
     UtenteDaoImp utente;
     StrutturaDaoImp struttura;

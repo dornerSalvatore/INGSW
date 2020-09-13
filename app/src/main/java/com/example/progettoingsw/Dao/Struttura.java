@@ -9,6 +9,7 @@ public class Struttura {
     private float latitudine;
     private float longitudine;
     private String LinkImg;
+    private String indirizzo;
 
     public String getNome() {
         return nome;
@@ -78,7 +79,15 @@ public class Struttura {
 
     }
 
-    public Struttura(String nome, String citta, String provincia, float prezzo, String tipologia, float latitudine, float longitudine, String linkImg) {
+    public String getIndirizzo() {
+        return indirizzo;
+    }
+
+    public void setIndirizzo(String indirizzo) {
+        this.indirizzo = indirizzo;
+    }
+
+    public Struttura(String nome, String citta, String provincia, float prezzo, String tipologia, float latitudine, float longitudine, String linkImg, String indirizzo) {
         this.nome = nome;
         this.citta = citta;
         this.provincia = provincia;
@@ -87,5 +96,6 @@ public class Struttura {
         this.latitudine = latitudine;
         this.longitudine = longitudine;
         LinkImg = linkImg;
+        this.indirizzo=indirizzo;
     }
 }

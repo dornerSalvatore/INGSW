@@ -27,6 +27,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
+import com.example.progettoingsw.Dao.Struttura;
+import com.example.progettoingsw.Dao.StrutturaDaoImp;
 
 import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
 import static com.example.progettoingsw.Connection.ConnectionClass.pass;
@@ -38,12 +40,13 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
     Spinner prezzo;
     ArrayList<String> spinnerList1;
     ArrayAdapter<String> adapter1;
-
+    StrutturaDaoImp struttura;
     EditText nome;
     EditText citta;
     EditText provincia;
     String testo;
     String testo1;
+    ArrayList<Struttura> struttura1;
 
 
     @Override
@@ -62,6 +65,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
         provincia=(EditText)findViewById(R.id.editText3);
         spin=(Spinner)findViewById(R.id.spinner);
         prezzo=(Spinner)findViewById(R.id.spinner2);
+        struttura=new StrutturaDaoImp();
         ArrayAdapter<String> adapter;
         ArrayList<String> spinnerList;
         spinnerList=new ArrayList<>();
@@ -80,7 +84,12 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                 }
             });}
         else{
-            try{
+            ArrayList<String> tipologia=struttura.getListTipologia();
+            for(String s: tipologia)
+            {
+                spinnerList.add(s);
+            }
+           /* try{
                 String sql="Select Distinct  Tipologia from Struttura";
                 Statement stmt = con.createStatement();
                 ResultSet rs = stmt.executeQuery(sql);
@@ -89,7 +98,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                     String nome=rs.getString("tipologia");
                     spinnerList.add(nome);
 
-                }
+                }*/
                 adapter.notifyDataSetChanged();
                 int c=500;
                 spinnerList1.add("");
@@ -110,11 +119,11 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                 spin.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
                 prezzo.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
 
-            }
+            /*}
             catch (Exception f) {
 
                 Log.e("SQL Error : ", f.getMessage());
-            }
+            }*/
 
 
 
@@ -174,8 +183,36 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                     }
                 });
             } else {
+                 struttura1=null;
+                if(controlNome() && controlPrezzo())
+                { if(testo!="") struttura1=struttura.getListaStruttureByPar(spin.getSelectedItem().toString(),String.valueOf(nome.getText()), String.valueOf(citta.getText()),String.valueOf(provincia.getText()),Integer.parseInt(testo),Integer.parseInt(testo1));
+                else struttura1=struttura.getListaStruttureByPar(spin.getSelectedItem().toString(),String.valueOf(nome.getText()), String.valueOf(citta.getText()),String.valueOf(provincia.getText()),Integer.parseInt(testo));
+                }
+                else {
+                    if (!controlNome() && !controlPrezzo()) {
+                        struttura1=struttura.getListaStruttureByPar(spin.getSelectedItem().toString(), String.valueOf(citta.getText()),String.valueOf(provincia.getText()));
+                    } else {
+                        if (!controlPrezzo()) {
+                            struttura1=struttura.getListaStruttureByPar(spin.getSelectedItem().toString(),String.valueOf(nome.getText()), String.valueOf(citta.getText()),String.valueOf(provincia.getText()));
+                        } else  {
+                            if (testo != "")
+                                struttura1=struttura.getListaStruttureByPar(spin.getSelectedItem().toString(), String.valueOf(citta.getText()),String.valueOf(provincia.getText()),Integer.parseInt(testo),Integer.parseInt(testo1));
+                            else
+                                struttura1=struttura.getListaStruttureByPar(spin.getSelectedItem().toString(), String.valueOf(citta.getText()),String.valueOf(provincia.getText()),Integer.parseInt(testo));
+                        }
+                    }
+                }
+                ArrayList<String> strutture =new ArrayList<String>();
+                if(!struttura1.isEmpty())
+                {
+                for(Struttura st:struttura1){
+                    strutture.add(st.getNome()+":"+st.getIndirizzo());
+                    //strutture.add(rs.getString("indirizzo"));
+                    //strutture.add(rs.getString("prezzo")+"£");
 
-                try {
+                }
+
+                /*try {
                     String sql;
                     if(controlNome() && controlPrezzo())
                     { if(testo!="") sql = "Select * from Struttura where Tipologia = '" + spin.getSelectedItem().toString() + "' AND Nome= '" + nome.getText() + "'AND citta='" + citta.getText() + "' AND provincia='" + provincia.getText() + "'AND prezzo >='" + Integer.parseInt(testo) + "'AND prezzo <'" + Integer.parseInt(testo1) + "'";
@@ -214,7 +251,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                             //strutture.add(rs.getString("indirizzo"));
                             //strutture.add(rs.getString("prezzo")+"£");
 
-                        }
+                        }*/
 
 
 
@@ -239,10 +276,10 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                             }
                         });
                     }
-                } catch (Exception e) {
+               /* } catch (Exception e) {
                     isSuccess = false;
                     Log.e("SQL Error : ", e.getMessage());
-                }
+                }*/
 
 
 

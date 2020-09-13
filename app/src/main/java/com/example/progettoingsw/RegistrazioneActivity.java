@@ -2,7 +2,7 @@ package com.example.progettoingsw;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import java.sql.Connection;
+
 
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -21,7 +21,6 @@ import com.example.progettoingsw.Dao.UtenteDaoImp;
 public class RegistrazioneActivity extends AppCompatActivity {
 
 
-    Connection con;
     EditText username;
     EditText password;
     EditText email;

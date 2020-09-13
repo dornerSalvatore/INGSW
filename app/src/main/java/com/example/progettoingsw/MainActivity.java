@@ -22,7 +22,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.progettoingsw.Connection.ConnectionClass;
 import com.example.progettoingsw.Dao.UtenteDaoImp;
 
-import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
 import static com.example.progettoingsw.Connection.ConnectionClass.setVisitatori;
 
 

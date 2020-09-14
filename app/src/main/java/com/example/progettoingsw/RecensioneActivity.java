@@ -18,6 +18,7 @@ import com.example.progettoingsw.Dao.Recensione;
 import com.example.progettoingsw.Dao.RecensioneDaoImp;
 import com.example.progettoingsw.Dao.Struttura;
 import com.example.progettoingsw.Dao.StrutturaDaoImp;
+import com.example.progettoingsw.Dao.UtenteDaoImp;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -44,6 +45,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
     String indirizzo;
     RecensioneDaoImp recensione;
     StrutturaDaoImp struttura;
+    UtenteDaoImp utente;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Bundle e= getIntent().getExtras();
@@ -59,6 +61,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
         spin=(Spinner)findViewById(R.id.spinner4);
         voto=(Spinner)findViewById(R.id.voto);
         commento=(EditText)findViewById(R.id.textCommento);
+        utente=new UtenteDaoImp();
         recensione=new RecensioneDaoImp();
         struttura=new StrutturaDaoImp();
         ArrayAdapter<String> adapter;
@@ -207,8 +210,17 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }
+    @Override
+    public void onDestroy() {
+        // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLASS
+        if(nickname!=null)
+            utente.setLogOut(nickname);
+        super.onDestroy();
+
+    }
+
+    }
 
 
 
 
-}

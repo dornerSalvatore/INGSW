@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
+import com.example.progettoingsw.Dao.UtenteDaoImp;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -61,6 +62,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     float longi;
     float lat;
     String ind;
+    UtenteDaoImp utente;
 
 
 
@@ -76,6 +78,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             nickname=e.getString("nickname");
         }
+        utente=new UtenteDaoImp();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -266,6 +269,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         public void onProviderDisabled(String provider) {
                             Toast.makeText(MapsActivity.this, "Posizione disattivata", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MapsActivity.this, RicercaActivity.class);
+                            intent.putExtra("nickname",nickname);
                             startActivity(intent);
                             finish();
 
@@ -275,6 +279,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 } else {
                     Toast.makeText(MapsActivity.this, "Posizione disattivata", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(MapsActivity.this, RicercaActivity.class);
+                    intent.putExtra("nickname",nickname);
                     startActivity(intent);
                     finish();
                 }
@@ -300,6 +305,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (arg0 != null && !arg0.getTitle().equals("sei qui")) {
                         Intent intent1 = new Intent(MapsActivity.this, StrutturaActivity.class);
                         intent1.putExtra("string",arg0.getTitle());
+                        intent1.putExtra("nickname",nickname);
                         startActivity(intent1);
                     }
 
@@ -307,6 +313,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
             });
         }
+    @Override
+    public void onDestroy() {
+        // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLASS
+        if(nickname!=null)
+            utente.setLogOut(nickname);
+        super.onDestroy();
+
+    }
 
 
 

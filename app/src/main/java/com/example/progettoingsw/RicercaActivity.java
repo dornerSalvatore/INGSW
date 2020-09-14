@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.example.progettoingsw.Connection.ConnectionClass;
 import com.example.progettoingsw.Dao.Struttura;
 import com.example.progettoingsw.Dao.StrutturaDaoImp;
+import com.example.progettoingsw.Dao.UtenteDaoImp;
 
 import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
 import static com.example.progettoingsw.Connection.ConnectionClass.pass;
@@ -47,6 +48,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
     String testo;
     String testo1;
     ArrayList<Struttura> struttura1;
+    UtenteDaoImp utente;
 
 
     @Override
@@ -69,6 +71,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
         ArrayAdapter<String> adapter;
         ArrayList<String> spinnerList;
         spinnerList=new ArrayList<>();
+        utente=new UtenteDaoImp();
         adapter=new ArrayAdapter<String> (RicercaActivity.this,android.R.layout.simple_spinner_dropdown_item,spinnerList);
         spin.setAdapter(adapter);
         spinnerList1=new ArrayList<>();
@@ -370,6 +373,13 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback
     }
+    @Override
+    public void onDestroy() {
+        // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLASS
+        if(nickname!=null)
+            utente.setLogOut(nickname);
+        super.onDestroy();
 
+    }
 
 }

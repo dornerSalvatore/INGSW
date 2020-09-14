@@ -7,24 +7,20 @@ import com.example.progettoingsw.Connection.ConnectionClass;
 import net.sourceforge.jtds.jdbc.DateTime;
 
 
-import java.sql.Connection;
+
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
-import static com.example.progettoingsw.Connection.ConnectionClass.db;
-import static com.example.progettoingsw.Connection.ConnectionClass.ip;
-import static com.example.progettoingsw.Connection.ConnectionClass.pass;
-import static com.example.progettoingsw.Connection.ConnectionClass.un;
+
 
 
 public class UtenteDaoImp implements UtenteDaoInterface{
     private Utente utente;
 
-    public  void setLogOut( String nickname) {
+    public   void setLogOut( String nickname) {
         Date data = new Date((System.currentTimeMillis()));
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

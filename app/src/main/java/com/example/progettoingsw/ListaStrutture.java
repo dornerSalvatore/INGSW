@@ -12,10 +12,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.progettoingsw.Dao.UtenteDaoImp;
+
 import java.util.ArrayList;
 
 public class ListaStrutture extends AppCompatActivity {
     String nickname;
+    UtenteDaoImp utente;
 
 
     @Override
@@ -27,6 +30,7 @@ public class ListaStrutture extends AppCompatActivity {
         Bundle args = intent.getBundleExtra("strutture");
         ArrayList<String> object = (ArrayList<String>) args.getSerializable("ARRAYLIST");
         Bundle e= intent.getExtras();
+        utente=new UtenteDaoImp();
         if(e!= null)
         {
             nickname=e.getString("nickname");
@@ -46,6 +50,14 @@ public class ListaStrutture extends AppCompatActivity {
                 startActivity(openPage1);
             }
         });
+
+    }
+    @Override
+    public void onDestroy() {
+        // RUN SUPER | REGISTER ACTIVITY AS NULL IN APP CLASS
+        if(nickname!=null)
+            utente.setLogOut(nickname);
+        super.onDestroy();
 
     }
 }

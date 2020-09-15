@@ -43,11 +43,11 @@ public class UtenteDaoImp implements UtenteDaoInterface{
 
     }
     public  void saveUtente(String nome, String cognome, String email, String passwd, String username, String nickname,  int FlagNickname) {
-        String sql3;
+
 
         try {
 
-            sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname,FlagBlacklist,FlagNickname,) VALUES ('" + nome + "','" + cognome + "','" + email + "','" + username + "','" + passwd + "','" + nickname + "','" + '0' + "','" + FlagNickname + "')";
+           String  sql3 = "INSERT INTO Utente (Nome,Cognome,Email,Username,Passwd,Nickname,FlagBlacklist,FlagNickname) VALUES ('" + nome + "','" + cognome + "','" + email + "','" + username + "','" + passwd + "','" + nickname + "','" + 0  + "','"+ FlagNickname + "')";
             Statement stmt3 = ConnectionClass.con.createStatement();
             stmt3.executeUpdate(sql3);
 

@@ -1,6 +1,7 @@
 package com.example.progettoingsw;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -215,47 +216,6 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
 
                 }
 
-                /*try {
-                    String sql;
-                    if(controlNome() && controlPrezzo())
-                    { if(testo!="") sql = "Select * from Struttura where Tipologia = '" + spin.getSelectedItem().toString() + "' AND Nome= '" + nome.getText() + "'AND citta='" + citta.getText() + "' AND provincia='" + provincia.getText() + "'AND prezzo >='" + Integer.parseInt(testo) + "'AND prezzo <'" + Integer.parseInt(testo1) + "'";
-                      else sql = "Select * from Struttura where Tipologia = '" + spin.getSelectedItem().toString() + "' AND Nome= '" + nome.getText() + "'AND citta='" + citta.getText() + "' AND provincia='" + provincia.getText() + "'AND prezzo >='" + Integer.parseInt(testo1) +  "'";
-                    }
-                    else {
-                        if (!controlNome() && !controlPrezzo()) {
-                            sql = "Select * from Struttura where Tipologia = '" + spin.getSelectedItem().toString() + "'AND citta='" + citta.getText() + "' AND provincia='" + provincia.getText() + "'";
-                        } else {
-                            if (!controlPrezzo()) {
-                                sql = "Select * from Struttura where Tipologia = '" + spin.getSelectedItem().toString() + "' AND Nome= '" + nome.getText() + "'AND citta='" + citta.getText() + "' AND provincia='" + provincia.getText() + "'";
-                            } else  {
-                                if (testo != "")
-                                    sql = "Select * from Struttura where Tipologia = '" + spin.getSelectedItem().toString() + "'AND citta='" + citta.getText() + "' AND provincia='" + provincia.getText() + "'AND prezzo >='" + Integer.parseInt(testo) + "'AND prezzo <'" + Integer.parseInt(testo1) + "'";
-                                else
-                                    sql = "Select * from Struttura where Tipologia = '" + spin.getSelectedItem().toString() + "'AND citta='" + citta.getText() + "' AND provincia='" + provincia.getText() + "'AND prezzo >='" + Integer.parseInt(testo1) + "'";
-                            }
-                        }
-                    }
-
-                    Statement stmt = con.createStatement();
-                    ResultSet rs = stmt.executeQuery(sql);
-                   ArrayList<String> strutture =new ArrayList<String>();
-                    //strutture.add("Nome "+" indirizzo "+" prezzo ");
-                    //strutture.add("Indirizzo");
-                    //strutture.add("Prezzo");
-                    if(rs.next()) {
-
-                        strutture.add(rs.getString("nome")+":"+rs.getString("indirizzo"));
-                         //strutture.add(rs.getString("indirizzo"));
-                        //strutture.add(rs.getString("prezzo")+"£");
-
-
-                        while(rs.next()){
-                            strutture.add(rs.getString("nome")+":"+rs.getString("indirizzo"));
-                            //strutture.add(rs.getString("indirizzo"));
-                            //strutture.add(rs.getString("prezzo")+"£");
-
-                        }*/
-
 
 
 
@@ -279,10 +239,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
                             }
                         });
                     }
-               /* } catch (Exception e) {
-                    isSuccess = false;
-                    Log.e("SQL Error : ", e.getMessage());
-                }*/
+
 
 
 

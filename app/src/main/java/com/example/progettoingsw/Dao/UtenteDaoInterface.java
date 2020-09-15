@@ -1,12 +1,6 @@
 package com.example.progettoingsw.Dao;
 
-import com.example.progettoingsw.Connection.ConnectionClass;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 public interface UtenteDaoInterface {
     public  void LogIn(String username, String password);

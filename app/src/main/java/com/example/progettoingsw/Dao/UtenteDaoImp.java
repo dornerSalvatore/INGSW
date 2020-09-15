@@ -27,6 +27,7 @@ public class UtenteDaoImp implements UtenteDaoInterface{
         String strDate = sdf.format(c.getTime());
 
 
+
         if (ConnectionClass.con == null) {
 
         } else {
@@ -136,7 +137,7 @@ public class UtenteDaoImp implements UtenteDaoInterface{
                 utente.setFlagNickname(rs.getInt("FlagNickname"));
                 utente.setNome(rs.getString("nome"));
                 utente.setUsername(rs.getString("username"));
-                utente.setTimeLogout((DateTime) rs.getObject("TimeLogout"));
+                utente.setTimeLogout(rs.getDate("TimeLogout"));
                 utente.setPasswd(rs.getString("passwd"));
 
 
@@ -159,8 +160,7 @@ public class UtenteDaoImp implements UtenteDaoInterface{
         if(rs2.next()) {
             utente= new Utente(rs2.getString("nome"),rs2.getString("cognome"),rs2.getString("email"),rs2.getString("passwd"),rs2.getString("username"),
                     rs2.getString("nickname"),rs2.getInt("FlagBlacklist"),rs2.getInt("FlagNickname"));
-            DateTime d= (DateTime)(rs2.getObject("TimeLogout"));
-            utente.setTimeLogout(d);
+            utente.setTimeLogout( rs2.getDate("TimeLogout"));
         }
 
       }  catch (Exception c) {

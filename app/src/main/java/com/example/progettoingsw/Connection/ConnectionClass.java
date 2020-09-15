@@ -3,9 +3,7 @@ package com.example.progettoingsw.Connection;
 import android.os.StrictMode;
 import android.util.Log;
 
-import com.example.progettoingsw.Dao.Utente;
 
-import net.sourceforge.jtds.jdbc.DateTime;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -15,7 +13,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static java.util.Calendar.getInstance;
+
 
 public class ConnectionClass {
     public static String ip = "database-1.cqcdg0e6vlsg.us-east-2.rds.amazonaws.com"; // SQL Server IP Address

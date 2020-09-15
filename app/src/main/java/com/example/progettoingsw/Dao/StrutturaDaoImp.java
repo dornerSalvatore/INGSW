@@ -14,7 +14,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
     Struttura struttura;
     public Struttura getStrutturaByInd(String indirizzo){
         try {
-            String sql = "SELECT LinkImg FROM Struttura WHERE indirizzo = '" + indirizzo +  "' ";
+            String sql = "SELECT * FROM Struttura WHERE indirizzo = '" + indirizzo +  "' ";
             Statement stmt = ConnectionClass.con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -39,6 +39,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
     {
         try {
             String sql = "SELECT LinkImg FROM Struttura WHERE indirizzo = '" + indirizzo +  "' ";
+
             Statement stmt = ConnectionClass.con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
 
@@ -65,7 +66,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
             Statement stmt = ConnectionClass.con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
             if (rs.next()) {
-                struttura=new Struttura("nome",rs.getString("citta"),rs.getString("tipologia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                struttura=new Struttura("nome",rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
                 ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo"));
 
             }
@@ -84,7 +85,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
             while(rs.next())
             {
 
-                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("tipologia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
                         ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo")));
 
 
@@ -128,7 +129,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
-                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("tipologia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
                         ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo")));
 
             }
@@ -150,7 +151,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
-                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("tipologia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
                         ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo")));
 
             }
@@ -172,7 +173,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
-                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("tipologia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
                         ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo")));
 
             }
@@ -194,7 +195,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
-                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("tipologia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
                         ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo")));
 
             }
@@ -216,7 +217,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
-                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("tipologia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
                         ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo")));
 
             }
@@ -238,7 +239,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
-                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("tipologia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
                         ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo")));
 
             }

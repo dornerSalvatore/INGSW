@@ -13,7 +13,7 @@ public class Utente {
    private String nickname;
      private  int FlagBlacklist;
     private int FlagNickname;
-    private DateTime TimeLogout;
+    private Date TimeLogout;
 
     public Utente() {
         this.nome = null;
@@ -104,11 +104,11 @@ public class Utente {
         FlagNickname = flagNickname;
     }
 
-    public DateTime getTimeLogout() {
+    public Date getTimeLogout() {
         return TimeLogout;
     }
 
-    public void setTimeLogout(DateTime timeLogout) {
+    public void setTimeLogout(Date timeLogout) {
         TimeLogout = timeLogout;
     }
 

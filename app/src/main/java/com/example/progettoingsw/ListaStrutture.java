@@ -43,11 +43,7 @@ public class ListaStrutture extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id)
             {
-                Intent openPage1 = new Intent(ListaStrutture.this,StrutturaActivity.class);
-                openPage1.putExtra("string",av.getItemAtPosition(pos).toString());
-                openPage1.putExtra("nickname",nickname);
-                // passo all'attivazione dell'activity Pagina.java
-                startActivity(openPage1);
+                new ArrayAdapterControl(ListaStrutture.this).onItemClick(av,v,pos,id);
             }
         });
 

@@ -7,8 +7,7 @@ import com.example.progettoingsw.Connection.ConnectionClass;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+
 
 public class RicercaStrutturaDaoImp implements RicercaStrutturaDaoInterface {
     RicercaStruttura s;
@@ -18,7 +17,7 @@ public class RicercaStrutturaDaoImp implements RicercaStrutturaDaoInterface {
     public void ricercaStruttura(String nickname, String indirizzo) {
         if (nickname != null) {
             s = new RicercaStruttura();
-            UtenteDaoImp u = new UtenteDaoImp();
+            UtenteDaoImp1 u = new UtenteDaoImp1();
             StrutturaDaoImp p = new StrutturaDaoImp();
             s.setUtente(u.getUtenteByNickname(nickname));
             s.setStruttura(p.getStrutturaByInd(indirizzo));

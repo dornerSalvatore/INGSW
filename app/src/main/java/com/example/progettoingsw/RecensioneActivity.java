@@ -2,32 +2,19 @@ package com.example.progettoingsw;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
-import com.example.progettoingsw.Connection.ConnectionClass;
-import com.example.progettoingsw.Dao.Recensione;
+
 import com.example.progettoingsw.Dao.RecensioneDaoImp;
-import com.example.progettoingsw.Dao.Struttura;
 import com.example.progettoingsw.Dao.StrutturaDaoImp;
-import com.example.progettoingsw.Dao.UtenteDaoImp;
+import com.example.progettoingsw.Dao.UtenteDaoImp1;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
-
-import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
-import static com.example.progettoingsw.Connection.ConnectionClass.getTopRecensione;
-import static com.example.progettoingsw.Connection.ConnectionClass.pass;
 
 public class RecensioneActivity extends AppCompatActivity  implements AdapterView.OnItemSelectedListener {
      String nickname;
@@ -42,7 +29,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
     String indirizzo;
     RecensioneDaoImp recensione;
     StrutturaDaoImp struttura;
-    UtenteDaoImp utente;
+    UtenteDaoImp1 utente;
     Button bottone1;
     Button bottone2;
     ArrayAdapter<String> adapter;
@@ -66,7 +53,7 @@ public class RecensioneActivity extends AppCompatActivity  implements AdapterVie
         spin=(Spinner)findViewById(R.id.spinner4);
         voto=(Spinner)findViewById(R.id.voto);
         commento=(EditText)findViewById(R.id.textCommento);
-        utente=new UtenteDaoImp();
+        utente=new UtenteDaoImp1();
         recensione=new RecensioneDaoImp();
         struttura=new StrutturaDaoImp();
         spinnerList=new ArrayList<>();

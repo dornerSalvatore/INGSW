@@ -1,14 +1,13 @@
 package com.example.progettoingsw.Dao;
 
 import android.util.Log;
-import android.widget.AdapterView;
-
-import com.bumptech.glide.Glide;
 import com.example.progettoingsw.Connection.ConnectionClass;
+
 
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 public class StrutturaDaoImp implements StrutturaDaoInterface {
     Struttura struttura;
@@ -100,6 +99,7 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
     }
     public ArrayList<String> getListTipologia(){
         ArrayList<String> tipologia=new ArrayList<>();
+
 
         try{
             String sql="Select Distinct  Tipologia from Struttura";
@@ -249,6 +249,27 @@ public class StrutturaDaoImp implements StrutturaDaoInterface {
 
             Log.e("SQL Error : ", f.getMessage());
         }
+        return r;
+    }
+    public ArrayList<Struttura> getListaStruttureByLatitudineLongitudine(double latitudine1,double latitudine2,double longitudine1,double longitudine2)
+    {
+        ArrayList<Struttura> r=new ArrayList<>();
+        try{
+            String sql = "SELECT * FROM Struttura WHERE  latitudine >='"+(latitudine1-0.03)+"'AND latitudine <= '"+(latitudine2+0.03)+"'and longitudine >='"+(longitudine1-1)+"'AND longitudine <= '"+(longitudine2+1)+"'";
+        Statement stmt = ConnectionClass.con.createStatement();
+        ResultSet rs = stmt.executeQuery(sql);
+
+        while(rs.next()) {
+            r.add( new Struttura(rs.getString("nome"),rs.getString("citta"),rs.getString("provincia"),rs.getFloat("prezzo"),rs.getString("tipologia"),rs.getFloat("latitudine")
+                    ,rs.getFloat("longitudine"),rs.getString("LinkImg"),rs.getString("indirizzo")));
+
+
+        }
+
+    } catch (Exception e) {
+
+        Log.e("SQL Error : ", e.getMessage());
+    }
         return r;
     }
 

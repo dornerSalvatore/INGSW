@@ -5,9 +5,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
@@ -17,15 +14,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 
-import android.os.StrictMode;
-import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
-import com.example.progettoingsw.Dao.UtenteDaoImp;
+import com.example.progettoingsw.Dao.Struttura;
+import com.example.progettoingsw.Dao.StrutturaDaoImp;
+import com.example.progettoingsw.Dao.UtenteDaoImp1;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -36,17 +31,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.sql.Array;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback/*GoogleMap.OnMarkerClickListener*/ {
 
@@ -56,13 +42,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     String indirizzo;
     LocationManager locationManager;
     SupportMapFragment mapFragment;
-    Connection con;
     String citta;
     String nome;
     float longi;
     float lat;
     String ind;
-    UtenteDaoImp utente;
+    UtenteDaoImp1 utente;
+    ArrayList<Struttura> s;
+    StrutturaDaoImp struttura;
 
 
 
@@ -78,7 +65,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         {
             nickname=e.getString("nickname");
         }
-        utente=new UtenteDaoImp();
+        utente=new UtenteDaoImp1();
+        struttura=new StrutturaDaoImp();
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -113,8 +101,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     if (address.getAddressLine(0) != null && address.getAddressLine(0).length() > 0 && !address.getAddressLine(0).contentEquals("null")) {
                                         indirizzo = addressList.get(0).getAddressLine(0);
                                         citta = addressList.get(0).getCountryName();
-                                        con = connectionClass(ConnectionClass.un.toString(), ConnectionClass.pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
-                                        if (con == null) {
+
+                                        if (ConnectionClass.con == null) {
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -123,32 +111,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                             });
 
                                         } else {
-                                            try {
-                                                String sql = "SELECT * FROM Struttura WHERE  latitudine >='"+(latitude-0.03)+"'AND latitudine <= '"+(latitude+0.03)+"'and longitudine >='"+(longitude-1)+"'AND longitudine <= '"+(longitude+1)+"'";
 
-                                                Statement stmt = con.createStatement();
-                                                ResultSet rs = stmt.executeQuery(sql);
-
-                                                while(rs.next()) {
-                                                     nome = rs.getString("nome");
-                                                     longi=rs.getFloat("Longitudine");
-                                                     lat=rs.getFloat("Latitudine");
-                                                     ind=rs.getString("indirizzo");
+                                                s=struttura.getListaStruttureByLatitudineLongitudine((latitude-0.03),(latitude+0.03),(longitude-1),(longitude+1));
+                                                for(Struttura s1:s)
+                                                {
+                                                    nome = s1.getNome();
+                                                    longi=s1.getLongitudine();
+                                                    lat=s1.getLatitudine();
+                                                    ind=s1.getIndirizzo();
                                                     LatLng lng1 = new LatLng(lat, longi);
                                                     MarkerOptions markerOpt = new MarkerOptions()
                                                             .position(lng1).title(nome+":"+ind);
                                                     mMap.addMarker(markerOpt);
                                                     markerOpt.isVisible();
-
-
-
-
                                                 }
 
-                                            } catch (Exception e) {
-
-                                                Log.e("SQL Error : ", e.getMessage());
-                                            }
                                         }
                                         mMap.addMarker(new MarkerOptions().position(lng).title("sei qui"));
                                         CameraPosition cameraPosition = new CameraPosition.Builder().target(lng).zoom(15).build();
@@ -203,8 +180,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     if (address.getAddressLine(0) != null && address.getAddressLine(0).length() > 0 && !address.getAddressLine(0).contentEquals("null")) {
                                         indirizzo = addressList.get(0).getAddressLine(0);
                                         citta = addressList.get(0).getCountryName();
-                                        con = connectionClass(ConnectionClass.un.toString(), ConnectionClass.pass.toString(), ConnectionClass.db.toString(), ConnectionClass.ip.toString());
-                                        if (con == null) {
+
+                                        if (ConnectionClass.con == null) {
                                             runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -213,32 +190,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                             });
 
                                         } else {
-                                            try {
-                                                String sql = "SELECT * FROM Struttura WHERE  latitudine >='"+(latitude-0.03)+"'AND latitudine <= '"+(latitude+0.03)+"'and longitudine >='"+(longitude-1)+"'AND longitudine <= '"+(longitude+1)+"'";
 
-                                                Statement stmt = con.createStatement();
-                                                ResultSet rs = stmt.executeQuery(sql);
-
-                                                while(rs.next()) {
-                                                    nome = rs.getString("nome");
-                                                    longi=rs.getFloat("Longitudine");
-                                                    lat=rs.getFloat("Latitudine");
-                                                    ind=rs.getString("indirizzo");
+                                                s=struttura.getListaStruttureByLatitudineLongitudine((latitude-0.03),(latitude+0.03),(longitude-1),(longitude+1));
+                                                for(Struttura s1:s) {
+                                                    nome = s1.getNome();
+                                                    longi = s1.getLongitudine();
+                                                    lat = s1.getLatitudine();
+                                                    ind = s1.getIndirizzo();
                                                     LatLng lng1 = new LatLng(lat, longi);
                                                     MarkerOptions markerOpt = new MarkerOptions()
-                                                            .position(lng1).title(nome+":"+ind);
+                                                            .position(lng1).title(nome + ":" + ind);
                                                     mMap.addMarker(markerOpt);
                                                     markerOpt.isVisible();
-
-
-
-
                                                 }
 
-                                            } catch (Exception e) {
-
-                                                Log.e("SQL Error : ", e.getMessage());
-                                            }
                                         }
                                         mMap.addMarker(new MarkerOptions().position(lng).title("sei qui"));
                                         CameraPosition cameraPosition = new CameraPosition.Builder().target(lng).zoom(15).build();

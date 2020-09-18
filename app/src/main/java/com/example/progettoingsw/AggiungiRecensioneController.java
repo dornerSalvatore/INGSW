@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
-public class aggiungiRecensioneController extends AsyncTask<String, String, String> {
+public class AggiungiRecensioneController extends AsyncTask<String, String, String> {
     public RecensioneActivity frame;
     String z = null;
-    Boolean isSuccess = false;
 
-    public aggiungiRecensioneController(RecensioneActivity view)
+    public AggiungiRecensioneController(RecensioneActivity view)
     {
         frame=view;
     }

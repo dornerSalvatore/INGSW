@@ -49,6 +49,15 @@
         <activity android:name=".RegistrazioneActivity" />
         <activity android:name=".MainActivity2" />
         <activity
+            android:name=".MainActivityT"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".RegistrazioneActivityT" />
+
+        <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>

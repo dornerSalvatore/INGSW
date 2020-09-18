@@ -5,7 +5,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
-import com.example.progettoingsw.Dao.UtenteDaoImp;
+import com.example.progettoingsw.Dao.UtenteDaoImp1;
 
     public class CheckLoginController extends AsyncTask<String, String, String> {
         public MainActivity frame;
@@ -44,7 +44,7 @@ import com.example.progettoingsw.Dao.UtenteDaoImp;
                 z = "On Internet Connection";
             }
             else {
-                UtenteDaoImp u=new UtenteDaoImp();
+                UtenteDaoImp1 u=new UtenteDaoImp1();
                 u.LogIn(String.valueOf(frame.username.getText()),String.valueOf(frame.password.getText()));
                 if(u.getUtente()!=null) {
                     z = "Success";

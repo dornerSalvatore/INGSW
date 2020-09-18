@@ -12,19 +12,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.progettoingsw.Dao.UtenteDaoImp;
+import com.example.progettoingsw.Dao.UtenteDaoImp1;
 
 import java.util.ArrayList;
 
 import static com.example.progettoingsw.Connection.ConnectionClass.getTopRecensione;
 
 public class ButtonController {
-    public MainActivity frame;
-    public MainActivity2 frame1;
-    public RecensioneActivity frame2;
-    public RegistrazioneActivity frame3;
-    public RicercaActivity frame4;
-    public StrutturaActivity frame5;
+    private MainActivity frame;
+    private MainActivity2 frame1;
+    private RecensioneActivity frame2;
+    private RegistrazioneActivity frame3;
+    private RicercaActivity frame4;
+   private StrutturaActivity frame5;
 
     public ButtonController(MainActivity view) {
         frame = view;
@@ -88,7 +88,7 @@ public class ButtonController {
                 @Override
                 public void onClick(View view) {
                     Intent openPage1 = new Intent(frame1,MainActivity.class);
-                    UtenteDaoImp utente=new UtenteDaoImp();
+                    UtenteDaoImp1 utente=new UtenteDaoImp1();
                     utente.setLogOut(frame1.nickname);
                     // passo all'attivazione dell'activity Pagina.java
                     frame1.startActivity(openPage1);
@@ -147,7 +147,7 @@ public class ButtonController {
             public void onClick(View view) {
 
                 // passo all'attivazione dell'activity Pagina.java
-                new aggiungiRecensioneController(frame2).execute("");
+                new AggiungiRecensioneController(frame2).execute("");
 
             }
         });
@@ -157,7 +157,7 @@ public class ButtonController {
     public ButtonController(RegistrazioneActivity view)
     {
         frame3=view;
-         checkRegistrazioneController c=new  checkRegistrazioneController(frame3);
+         CheckRegistrazioneController c=new CheckRegistrazioneController(frame3);
 
 
 
@@ -175,7 +175,7 @@ public class ButtonController {
                 if (!c.controlEmail() | !c.controlNickname() | ! c.controlPassword() | !c.controlUsername()) {
                     return;
                 } else {
-                    new  checkRegistrazioneController(frame3).execute(""); //codice per eseguire la connessione e interrogazione al DBMS
+                    new CheckRegistrazioneController(frame3).execute(""); //codice per eseguire la connessione e interrogazione al DBMS
                 }
             }
         });

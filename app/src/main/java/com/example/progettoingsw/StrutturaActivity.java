@@ -1,26 +1,19 @@
 package com.example.progettoingsw;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Build;
+
 import android.os.Bundle;
 
-import android.util.Log;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
+
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageButton;
+
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -35,7 +28,7 @@ import com.example.progettoingsw.Dao.RecensioneDaoImp;
 import com.example.progettoingsw.Dao.RicercaStrutturaDaoImp;
 import com.example.progettoingsw.Dao.StrutturaDaoImp;
 import com.example.progettoingsw.Dao.Utente;
-import com.example.progettoingsw.Dao.UtenteDaoImp;
+import com.example.progettoingsw.Dao.UtenteDaoImp1;
 
 
 
@@ -57,7 +50,7 @@ public class StrutturaActivity extends AppCompatActivity {
     String nickname;
     Button aggiungi;
     ImageView image1;
-    UtenteDaoImp utente;
+    UtenteDaoImp1 utente;
     RecensioneDaoImp recensione;
     StrutturaDaoImp struttura;
     Utente u;
@@ -68,7 +61,7 @@ public class StrutturaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.struttura);
-        utente = new UtenteDaoImp();
+        utente = new UtenteDaoImp1();
         recensione = new RecensioneDaoImp();
         struttura = new StrutturaDaoImp();
         mylist = (ListView) findViewById(R.id.lista);

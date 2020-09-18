@@ -7,18 +7,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.progettoingsw.Dao.UtenteDaoImp;
+import com.example.progettoingsw.Dao.UtenteDaoImp1;
 
 import java.util.ArrayList;
 
 public class ListaStrutture extends AppCompatActivity {
     String nickname;
-    UtenteDaoImp utente;
+    UtenteDaoImp1 utente;
 
 
     @Override
@@ -30,7 +27,7 @@ public class ListaStrutture extends AppCompatActivity {
         Bundle args = intent.getBundleExtra("strutture");
         ArrayList<String> object = (ArrayList<String>) args.getSerializable("ARRAYLIST");
         Bundle e= intent.getExtras();
-        utente=new UtenteDaoImp();
+        utente=new UtenteDaoImp1();
         if(e!= null)
         {
             nickname=e.getString("nickname");
@@ -43,7 +40,7 @@ public class ListaStrutture extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> av, View v, int pos, long id)
             {
-                new ArrayAdapterControl(ListaStrutture.this).onItemClick(av,v,pos,id);
+                new ArrayAdapterController(ListaStrutture.this).onItemClick(av,v,pos,id);
             }
         });
 

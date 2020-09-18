@@ -1,6 +1,5 @@
 package com.example.progettoingsw;
 
-import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
@@ -12,8 +11,8 @@ import java.util.ArrayList;
 import static com.example.progettoingsw.Connection.ConnectionClass.getTopRecensione;
 
 public class SpinnerController {
-    public RecensioneActivity frame;
-    public RicercaActivity frame1;
+    private RecensioneActivity frame;
+    private RicercaActivity frame1;
 
     public SpinnerController(RecensioneActivity view)
     {

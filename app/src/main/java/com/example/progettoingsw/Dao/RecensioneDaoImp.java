@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class RecensioneDaoImp implements RecensioneDaoInterface {
     Recensione recensione;
-    UtenteDaoImp utente;
+    UtenteDaoImp1 utente;
     StrutturaDaoImp struttura;
     public   boolean checkRecensionePresente(String nickname, String indirizzo)
     {
@@ -61,7 +61,7 @@ public class RecensioneDaoImp implements RecensioneDaoInterface {
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
-                utente=new UtenteDaoImp();
+                utente=new UtenteDaoImp1();
                 struttura=new StrutturaDaoImp();
                 recensione=new Recensione(rs.getInt("id"),rs.getString("commento"),Integer.parseInt(rs.getString("stelle")),utente.getUtenteByNickname(rs.getString("nickname")),
                         struttura.getStrutturaByInd(rs.getString("indirizzo")));
@@ -82,7 +82,7 @@ public class RecensioneDaoImp implements RecensioneDaoInterface {
             ResultSet rs = stmt.executeQuery(sql);
             while(rs.next())
             {
-                utente=new UtenteDaoImp();
+                utente=new UtenteDaoImp1();
                 struttura=new StrutturaDaoImp();
                 recensione=new Recensione(rs.getInt("id"),rs.getString("commento"),Integer.parseInt(rs.getString("stelle")),utente.getUtenteByNickname(rs.getString("nickname")),
                         struttura.getStrutturaByInd(rs.getString("indirizzo")));

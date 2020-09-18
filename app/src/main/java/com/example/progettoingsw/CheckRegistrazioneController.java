@@ -10,12 +10,12 @@ import android.widget.Toast;
 import com.example.progettoingsw.Connection.ConnectionClass;
 
 
-public class checkRegistrazioneController extends AsyncTask<String, String, String> {
+public class CheckRegistrazioneController extends AsyncTask<String, String, String> {
     public RegistrazioneActivity frame;
     String z = null;
 
 
-    public checkRegistrazioneController(RegistrazioneActivity view) {
+    public CheckRegistrazioneController(RegistrazioneActivity view) {
         frame = view;
     }
 

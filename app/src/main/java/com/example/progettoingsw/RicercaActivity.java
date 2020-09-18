@@ -1,23 +1,12 @@
 package com.example.progettoingsw;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 
 
-import java.io.Serializable;
-
-import java.sql.Connection;
-
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 
-import android.content.Intent;
-
-import android.util.Log;
 import android.view.View;
 
 import android.widget.AdapterView;
@@ -30,15 +19,11 @@ import android.widget.Toast;
 import com.example.progettoingsw.Connection.ConnectionClass;
 import com.example.progettoingsw.Dao.Struttura;
 import com.example.progettoingsw.Dao.StrutturaDaoImp;
-import com.example.progettoingsw.Dao.UtenteDaoImp;
-
-import static com.example.progettoingsw.Connection.ConnectionClass.connectionClass;
-import static com.example.progettoingsw.Connection.ConnectionClass.pass;
+import com.example.progettoingsw.Dao.UtenteDaoImp1;
 
 public class RicercaActivity extends Activity implements AdapterView.OnItemSelectedListener {
     Spinner spin;
     String nickname;
-    Connection con;
     Spinner prezzo;
     ArrayList<String> spinnerList1;
     ArrayAdapter<String> adapter1;
@@ -49,7 +34,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
     String testo;
     String testo1;
     ArrayList<Struttura> struttura1;
-    UtenteDaoImp utente;
+    UtenteDaoImp1 utente;
     Button bottone2;
     Button bottone1;
     ArrayAdapter<String> adapter;
@@ -74,7 +59,7 @@ public class RicercaActivity extends Activity implements AdapterView.OnItemSelec
         prezzo = (Spinner) findViewById(R.id.spinner2);
         struttura = new StrutturaDaoImp();
         spinnerList = new ArrayList<>();
-        utente = new UtenteDaoImp();
+        utente = new UtenteDaoImp1();
         adapter = new ArrayAdapter<String>(RicercaActivity.this, android.R.layout.simple_spinner_dropdown_item, spinnerList);
         spin.setAdapter(adapter);
         spinnerList1 = new ArrayList<>();

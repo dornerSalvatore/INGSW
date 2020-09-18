@@ -4,9 +4,6 @@ import android.util.Log;
 
 import com.example.progettoingsw.Connection.ConnectionClass;
 
-import net.sourceforge.jtds.jdbc.DateTime;
-
-
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -17,7 +14,7 @@ import java.util.Calendar;
 
 
 
-public class UtenteDaoImp implements UtenteDaoInterface{
+public class UtenteDaoImp1 implements UtenteDaoInterface1 {
     private Utente utente;
 
     public   void setLogOut( String nickname) {

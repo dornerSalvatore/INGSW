@@ -1,5 +1,8 @@
 package com.example.progettoingsw;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,26 +16,23 @@ import android.widget.RadioButton;
 
 import com.example.progettoingsw.Dao.UtenteDaoImp1;
 
-
-public class RegistrazioneActivity extends AppCompatActivity {
-
-
+public class RegistrazioneActivityT extends AppCompatActivity{
     EditText username;
     EditText password;
-    EditText email;
-    EditText nickname;
-    EditText nome;
-    EditText cognome;
-    RadioButton visualizza;
-    Button bottone1;
-    Button bottone2;
-    UtenteDaoImp1 utente;
+            EditText email;
+            EditText nickname;
+            EditText nome;
+            EditText cognome;
+            RadioButton visualizza;
+            Button bottone1;
+            Button bottone2;
+            UtenteDaoImp1 utente;
 
 
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+@Override
+protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrazione);
 
@@ -46,7 +46,6 @@ public class RegistrazioneActivity extends AppCompatActivity {
         bottone1 = (Button) findViewById(R.id.button1);
         bottone2 = (Button) findViewById(R.id.invia);
         utente = new UtenteDaoImp1();
-        new ButtonController(RegistrazioneActivity.this);
-    }
-
+        new ButtonControllerT(RegistrazioneActivityT.this);
+        }
 }
